@@ -91,3 +91,9 @@ class OrderItems(Base):
         "Clothes",
         back_populates="order_items"
     )
+class Users(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String(255), unique=True, nullable=False)
+    hashed_password = Column(String(255), nullable=False)

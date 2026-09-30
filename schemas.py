@@ -88,3 +88,18 @@ class OrderResponse(BaseModel):
 
     class Config:
         from_attributes = True
+        # User registration request
+        
+        
+class UserCreate(BaseModel):
+    email: str
+    password: str
+
+
+# User response
+class UserResponse(BaseModel):
+    id: int
+    email: str
+
+    class Config:
+        from_attributes = True

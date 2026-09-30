@@ -1,8 +1,10 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
+from passlib.context import CryptContext
+from fastapi import status
 
 from database import get_db
-from models import Clothes, Customers, Orders, OrderItems
+from models import Clothes, Customers, Orders, OrderItems, Users
 
 from schemas import (
     ClothesCreate,
@@ -12,12 +14,19 @@ from schemas import (
     OrderCreate,
     OrderItemCreate,
     OrderItemResponse,
-    OrderResponse
+    OrderResponse,
+    UserCreate,
+    UserResponse
 )
 
 
 # Create FastAPI application
 app = FastAPI()
+
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto"
+)
 
 
 # =========================
@@ -354,3 +363,42 @@ def add_order_item(
             status_code=500,
             detail="Could not add order item"
         )
+        
+#===================================================
+# USER REGISTRATION
+#====================================================
+
+@app.post(
+    "/register",
+    response_model=UserResponse,
+    status_code=status.HTTP_201_CREATED
+)
+def register_user(
+    user_data: UserCreate,
+    db: Session = Depends(get_db)
+):
+    # Check whether the email is already registered
+    existing_user = db.query(Users).filter(
+        Users.email == user_data.email
+    ).first()
+
+    if existing_user:
+        raise HTTPException(
+            status_code=400,
+            detail="Email is already registered"
+        )
+
+    # Hash the password before storing it
+    hashed_password = pwd_context.hash(user_data.password)
+
+    # Create the new user
+    new_user = Users(
+        email=user_data.email,
+        hashed_password=hashed_password
+    )
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user
