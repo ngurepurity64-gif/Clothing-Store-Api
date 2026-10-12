@@ -1,4 +1,4 @@
-CREATE TABLE Clothes (
+CREATE TABLE clothes (
     clothing_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     brand VARCHAR(50),
@@ -8,22 +8,22 @@ CREATE TABLE Clothes (
     price DECIMAL(10,2) NOT NULL
 );
 
-CREATE TABLE Customers (
+CREATE TABLE customers (
     customer_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     phone VARCHAR(20)
 );
 
-CREATE TABLE Orders (
+CREATE TABLE orders (
     order_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     customer_id INT NOT NULL,
     order_date DATE NOT NULL,
 
     FOREIGN KEY (customer_id)
-        REFERENCES Customers(customer_id)
+        REFERENCES customers(customer_id)
 );
 
-CREATE TABLE OrderItems (
+CREATE TABLE order_items (
     order_item_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     order_id INT NOT NULL,
     clothing_id INT NOT NULL,
@@ -31,19 +31,26 @@ CREATE TABLE OrderItems (
     unit_price DECIMAL(10,2) NOT NULL,
 
     FOREIGN KEY (order_id)
-        REFERENCES Orders(order_id),
+        REFERENCES orders(order_id),
 
     FOREIGN KEY (clothing_id)
-        REFERENCES Clothes(clothing_id)
+        REFERENCES clothes(clothing_id)
 );
 
--- Database Schema Description
--- Clothes stores clothing inventory.
--- Customers stores customer information.
--- Orders stores customer orders.
--- OrderItems stores the clothes included in each order.
+CREATE TABLE users (
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    hashed_password VARCHAR(255) NOT NULL
+);
+
+-- Database schema description
+-- clothes stores clothing inventory.
+-- customers stores customer information.
+-- orders stores customer orders.
+-- order_items stores clothes included in each order.
+-- users stores registered users and their hashed passwords.
 --
 -- Relationships:
--- Customers 1 ---- many Orders
--- Orders 1 ---- many OrderItems
--- Clothes 1 ---- many OrderItems
+-- customers 1 ---- many orders
+-- orders 1 ---- many order_items
+-- clothes 1 ---- many order_items
