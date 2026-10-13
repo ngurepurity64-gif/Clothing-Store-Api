@@ -1,3 +1,4 @@
+
 import os
 from datetime import datetime, timedelta, timezone
 
@@ -13,13 +14,6 @@ from models import Users
 from schemas import UserCreate, UserResponse
 
 
-router = APIRouter()
-
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto"
-)
-
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -29,7 +23,15 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 if not SECRET_KEY:
     raise RuntimeError("SECRET_KEY is missing from .env")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+router = APIRouter()
+
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto"
+)
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 
 def create_access_token(
@@ -47,13 +49,11 @@ def create_access_token(
 
     to_encode.update({"exp": expire})
 
-    encoded_jwt = jwt.encode(
+    return jwt.encode(
         to_encode,
         SECRET_KEY,
         algorithm=ALGORITHM
     )
-
-    return encoded_jwt
 
 
 def get_current_user(
@@ -61,7 +61,7 @@ def get_current_user(
     db: Session = Depends(get_db)
 ):
     credentials_exception = HTTPException(
-        status_code=401,
+        status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"}
     )
@@ -105,18 +105,16 @@ def login_user(
         user.hashed_password
     ):
         raise HTTPException(
-            status_code=401,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"}
         )
 
-    access_token_expires = timedelta(
-        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
-    )
-
     access_token = create_access_token(
         data={"sub": user.email},
-        expires_delta=access_token_expires
+        expires_delta=timedelta(
+            minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+        )
     )
 
     return {
@@ -140,14 +138,14 @@ def register_user(
 
     if existing_user:
         raise HTTPException(
-            status_code=400,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email is already registered"
         )
 
     hashed_password = pwd_context.hash(user_data.password)
 
     new_user = Users(
-        email=user_data.email,
+        email=str(user_data.email),
         hashed_password=hashed_password
     )
 

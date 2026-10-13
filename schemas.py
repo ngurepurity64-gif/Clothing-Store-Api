@@ -1,14 +1,14 @@
+
 from datetime import date
 from decimal import Decimal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 # =========================
 # CLOTHES
 # =========================
 
-# Used when adding or updating clothes
 class ClothesCreate(BaseModel):
     name: str
     brand: str
@@ -18,8 +18,9 @@ class ClothesCreate(BaseModel):
     price: Decimal
 
 
-# Used when returning clothes
 class ClothesResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     clothing_id: int
     name: str
     brand: str
@@ -28,78 +29,67 @@ class ClothesResponse(BaseModel):
     quantity: int
     price: Decimal
 
-    class Config:
-        from_attributes = True
-
 
 # =========================
 # CUSTOMERS
 # =========================
 
-# Used when creating a customer
 class CustomerCreate(BaseModel):
     name: str
     phone: str
 
 
-# Used when returning a customer
 class CustomerResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     customer_id: int
     name: str
     phone: str
-
-    class Config:
-        from_attributes = True
 
 
 # =========================
 # ORDERS
 # =========================
 
-# Used when creating an order
 class OrderCreate(BaseModel):
     customer_id: int
     order_date: date
 
 
-# Used when adding an item to an order
 class OrderItemCreate(BaseModel):
     clothing_id: int
     quantity: int = Field(gt=0)
 
 
-# Used when returning an order item
 class OrderItemResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     order_item_id: int
     clothing_id: int
     quantity: int
     unit_price: Decimal
 
-    class Config:
-        from_attributes = True
 
-
-# Used when returning an order
 class OrderResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     order_id: int
     customer_id: int
     order_date: date
     items: list[OrderItemResponse]
 
-    class Config:
-        from_attributes = True
-        # User registration request
-        
-        
+
+# =========================
+# USERS
+# =========================
+
 class UserCreate(BaseModel):
-    email: str
-    password: str
+    email: EmailStr
+    password: str = Field(min_length=8)
 
 
-# User response
 class UserResponse(BaseModel):
-    id: int
-    email: str
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        from_attributes = True
+    id: int
+    email: EmailStr

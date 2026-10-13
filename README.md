@@ -1,137 +1,330 @@
-CLOTHING STORE API
-README
+# Clothing Store API
 
-1. Overview
-Clothing Store API is a RESTful backend application developed with Python, FastAPI, PostgreSQL and SQLAlchemy. It provides CRUD operations for clothing items and endpoints for managing customers and orders. The API uses Pydantic for request validation and response models and is documented through FastAPI Swagger UI.
-2. Technologies
-•	Python 3
-•	FastAPI
-•	Uvicorn
-•	PostgreSQL
-•	SQLAlchemy
-•	Pydantic
-•	python-dotenv
-•	Git/GitHub
-3. Project Structure
+## 1. Overview
+
+Clothing Store API is a RESTful backend application built with Python, FastAPI, PostgreSQL, and SQLAlchemy. It manages clothing inventory, customers, orders, and order items. It also provides user registration and login using password hashing and JSON Web Tokens (JWT).
+
+The API uses Pydantic for request validation and response models. FastAPI provides interactive API documentation through Swagger UI.
+
+## 2. Technologies Used
+
+- Python 3
+- FastAPI
+- Uvicorn
+- PostgreSQL
+- SQLAlchemy
+- Pydantic
+- python-dotenv
+- Passlib
+- Python-JOSE
+- pytest
+- Git and GitHub
+
+## 3. Project Structure
+
+```text
 Clothing-Store-API/
-├── database.py
-├── models.py
-├── schemas.py
-├── main.py
-├── schema.sql
-├── requirements.txt
+├── routers/
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── clothes.py
+│   ├── customers.py
+│   └── orders.py
+├── SQL/
+│   ├── schema.sql
+│   ├── clothes_table_rows.sql
+│   ├── create_database_clothingstore.sql
+│   ├── insert_customers.sql
+│   ├── join_queries.sql
+│   └── rows_displayed.sql
+├── tests/
+│   └── test_main.py
+├── .env
 ├── .env.example
 ├── .gitignore
+├── database.py
+├── main.py
+├── models.py
+├── schemas.py
+├── requirements.txt
 └── README.md
-database.py manages the database engine, session and get\_db dependency. models.py contains SQLAlchemy models and relationships. schemas.py contains Pydantic request and response models. main.py contains the FastAPI endpoints.
-4. Database
-The application uses a PostgreSQL database named clothingstore with four related tables:
-•	Clothes — stores clothing information, stock quantity and price.
-•	Customers — stores customer information.
-•	Orders — stores customer orders.
-•	OrderItems — stores the clothing items belonging to each order.
-Relationships:
-•	Customers → Orders: one-to-many.
-•	Orders → OrderItems: one-to-many.
-•	Clothes → OrderItems: one-to-many.
-5. Database Schema
-CREATE TABLE Clothes (
-clothing\_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-name VARCHAR(50) NOT NULL,
-brand VARCHAR(50),
-color VARCHAR(30),
-size VARCHAR(10),
-quantity INT NOT NULL,
-price DECIMAL(10,2) NOT NULL
-);
+```
 
-CREATE TABLE Customers (
-customer\_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-name VARCHAR(100) NOT NULL,
-phone VARCHAR(20)
-);
+The structure above shows the intended layout. Keep the SQL filenames consistent with the files that actually exist in the `SQL` folder.
 
-CREATE TABLE Orders (
-order\_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-customer\_id INT NOT NULL,
-order\_date DATE NOT NULL,
-FOREIGN KEY (customer\_id) REFERENCES Customers(customer\_id)
-);
+**Main files and folders:**
 
-CREATE TABLE OrderItems (
-order\_item\_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-order\_id INT NOT NULL,
-clothing\_id INT NOT NULL,
-quantity INT NOT NULL,
-unit\_price DECIMAL(10,2) NOT NULL,
-FOREIGN KEY (order\_id) REFERENCES Orders(order\_id),
-FOREIGN KEY (clothing\_id) REFERENCES Clothes(clothing\_id)
-);
-6. API Endpoints
-•	GET /health — API health check.
-•	GET /clothes — retrieve all clothing items.
-•	GET /clothes/{clothing\_id} — retrieve one clothing item.
-•	POST /clothes — create a clothing item.
-•	PUT /clothes/{clothing\_id} — update a clothing item.
-•	DELETE /clothes/{clothing\_id} — delete a clothing item.
-•	POST /customers — create a customer.
-•	GET /customers — retrieve customers.
-•	POST /orders — create an order.
-•	GET /orders/{order\_id} — retrieve an order together with its items.
-7. Validation and Error Handling
-•	Clothing quantity is validated with Field(ge=0); negative quantities are rejected.
-•	Price values use Decimal.
-•	Response models are defined using Pydantic.
-•	Missing clothing and order records return HTTP 404 responses using HTTPException.
-•	Database sessions are provided through Depends(get\_db) and closed after use.
-8. Environment Configuration
-Database credentials are stored in .env and are not committed to Git.
-DATABASE\_URL=postgresql+psycopg://postgres:YOUR\_PASSWORD@localhost:5432/clothingstore
-The real password must be entered locally and must not be published.
-9. Installation and Setup
-Clone the repository:
+- `main.py` creates the FastAPI application and registers the routers.
+- `database.py` configures the database connection, sessions, and `get_db` dependency.
+- `models.py` defines the SQLAlchemy database models and relationships.
+- `schemas.py` defines Pydantic request and response schemas.
+- `routers/auth.py` handles user registration and login.
+- `routers/clothes.py` handles clothing endpoints.
+- `routers/customers.py` handles customer endpoints.
+- `routers/orders.py` handles order and order-item operations.
+- `SQL/schema.sql` creates the database tables.
+- `tests/test_main.py` contains automated API tests.
+- `.env.example` provides a template for local environment configuration.
+- `requirements.txt` lists the Python dependencies.
+
+## 4. Database Design
+
+The application uses PostgreSQL. The database schema contains five main tables.
+
+| Table | Purpose |
+|---|---|
+| `clothes` | Stores clothing names, brands, colours, sizes, quantities, and prices. |
+| `customers` | Stores customer information. |
+| `orders` | Stores customer orders and order dates. |
+| `order_items` | Stores clothing items, quantities, and unit prices associated with orders. |
+| `users` | Stores registered email addresses and hashed passwords. |
+
+### Relationships
+
+- One customer can have many orders.
+- One order can contain many order items.
+- One clothing item can appear in many order items.
+
+Foreign keys maintain the relationships between the related tables.
+
+## 5. Database Schema Setup
+
+The database structure is defined in `SQL/schema.sql`.
+
+The file creates the following tables:
+
+- `clothes`
+- `customers`
+- `orders`
+- `order_items`
+- `users`
+
+Run the complete `SQL/schema.sql` file against the intended PostgreSQL database using pgAdmin or another PostgreSQL client.
+
+The schema should create all five tables without requiring manually created tables from a previous database setup.
+
+### Verify the tables
+
+Run this SQL query in PostgreSQL:
+
+```sql
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
+  AND table_type = 'BASE TABLE'
+ORDER BY table_name;
+```
+
+The expected application tables are:
+
+```text
+clothes
+customers
+order_items
+orders
+users
+```
+
+Other tables may appear if your PostgreSQL database contains additional objects.
+
+## 6. API Endpoints
+
+### General
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/health` | Check API health. |
+
+### Clothing
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/clothes` | Retrieve clothing items. |
+| GET | `/clothes/{clothing_id}` | Retrieve one clothing item. |
+| POST | `/clothes` | Create a clothing item. |
+| PUT | `/clothes/{clothing_id}` | Update a clothing item. |
+| DELETE | `/clothes/{clothing_id}` | Delete a clothing item. |
+
+### Customers
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/customers` | Create a customer. |
+| GET | `/customers` | Retrieve customers. |
+
+### Orders and Order Items
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/orders` | Create an order. |
+| GET | `/orders` | Retrieve orders, if implemented in the current router. |
+| GET | `/orders/{order_id}` | Retrieve an order and its items. |
+| POST | `/orders/{order_id}/items` | Add an item to an order, if implemented at this route. |
+
+### Authentication
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/register` | Register a new user. |
+| POST | `/login` | Authenticate a user and obtain an access token. |
+
+Confirm the exact order endpoints in `routers/orders.py` before submitting this README. The endpoint paths shown in Swagger UI at `/docs` are the authoritative list for your running application.
+
+## 7. Validation and Error Handling
+
+- Clothing quantity uses `Field(ge=0)` to reject negative quantities.
+- Order-item quantity uses `Field(gt=0)` to require a positive quantity.
+- Price and unit-price values use `Decimal`.
+- User email addresses are validated using Pydantic's `EmailStr`.
+- User registration requires a password of at least eight characters.
+- Passwords are hashed before they are stored in the database.
+- Missing clothing and order records return appropriate HTTP error responses.
+- Database sessions are provided through FastAPI's `Depends(get_db)` dependency.
+- Response schemas use Pydantic v2 configuration where required to read SQLAlchemy model attributes.
+
+## 8. Environment Configuration and Security
+
+The application uses environment variables for database configuration and authentication secrets.
+
+The local `.env` file should contain your actual database connection string and a securely generated secret key.
+
+Example `.env` format:
+
+```env
+DATABASE_URL=postgresql+psycopg://postgres:YOUR_PASSWORD@localhost:5432/clothingstore
+SECRET_KEY=YOUR_GENERATED_SECRET_KEY
+```
+
+Replace the example values with your actual local configuration. The values above are placeholders, not working credentials.
+
+The `.env.example` file should contain placeholders only:
+
+```env
+DATABASE_URL=postgresql+psycopg://postgres:YOUR_PASSWORD@localhost:5432/clothingstore
+SECRET_KEY=YOUR_SECRET_KEY_HERE
+```
+
+### Security practices
+
+- `.env` must be excluded from Git using `.gitignore`.
+- Never commit real database passwords or secret keys.
+- Use a strong, randomly generated `SECRET_KEY`.
+- Store hashed passwords instead of plain-text passwords.
+- Keep the example configuration free of real credentials.
+
+## 9. Installation and Setup
+
+### Step 1: Clone the repository
+
+```bash
 git clone https://github.com/ngurepurity64-gif/Clothing-Store-API.git
 cd Clothing-Store-API
-Create and activate the virtual environment:
-python -m venv .venv
-.venv\\Scripts\\activate
-Install dependencies:
-pip install -r requirements.txt
-Create the environment file:
-copy .env.example .env
-Configure DATABASE\_URL in .env, then open schema.sql in pgAdmin and execute it against the clothingstore database.
-10. Run the API
-uvicorn main:app --reload
-Swagger documentation and interactive API testing are available at:
-http://127.0.0.1:8000/docs
-11. Verification
-Confirm that the PostgreSQL tables exist with:
-SELECT table\_name
-FROM information\_schema.tables
-WHERE table\_schema = 'public'
-ORDER BY table\_name;
-The expected tables are:
-•	clothes
-•	customers
-•	orders
-•	orderitems
-12. Testing
-The API endpoints were tested through Swagger UI. CRUD operations for clothing items, customer endpoints, order creation and order retrieval were tested, including 404 handling and request validation.
-The project was also tested from a fresh clone. During the fresh-clone test, missing dependencies were identified and added to requirements.txt. The application subsequently started successfully and /docs opened successfully.
-13. Security
-•	.env is excluded through .gitignore.
-•	.env.example contains only the required configuration format.
-•	Database credentials are not stored in the source code or README.
-14. Final Setup Checklist
-•	Clone repository.
-•	Create and activate .venv.
-•	Run pip install -r requirements.txt.
-•	Create and configure .env.
-•	Run schema.sql in PostgreSQL.
-•	Start with uvicorn main:app --reload.
-•	Open /docs.
-•	Test the endpoints.
-•	Confirm git status is clean before final submission.
-15. Repository
-GitHub: https://github.com/ngurepurity64-gif/Clothing-Store-API
+```
 
+### Step 2: Create and activate a virtual environment
+
+On Windows:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+### Step 3: Install dependencies
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+### Step 4: Create the environment file
+
+```powershell
+copy .env.example .env
+```
+
+Edit `.env` and configure your PostgreSQL connection and real secret key. Do not replace your working credentials with the example placeholders.
+
+### Step 5: Create the database schema
+
+Create the intended PostgreSQL database if it does not already exist. Then execute `SQL/schema.sql` against that database.
+
+Ensure that `DATABASE_URL` in `.env` points to the same database where you created the tables.
+
+For testing schema recreation, use a separate test database rather than dropping your working database.
+
+## 10. Running the API
+
+Start the development server from the project root:
+
+```powershell
+uvicorn main:app --reload
+```
+
+The API will normally be available at:
+
+- Base URL: `http://127.0.0.1:8000`
+- Swagger UI: `http://127.0.0.1:8000/docs`
+- Health check: `http://127.0.0.1:8000/health`
+
+The health check should return:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+Use Swagger UI to inspect the available endpoints and submit test requests.
+
+## 11. Testing
+
+The project includes automated tests in `tests/test_main.py`.
+
+Run the tests from the project root:
+
+```powershell
+python -m pytest -q
+```
+
+The test suite should pass before changes are committed. Test results depend on the current code, configuration, and test environment.
+
+Authentication and order-item operations should also be tested through Swagger UI where applicable:
+
+1. Register a user.
+2. Log in using the registered email in the login form's `username` field and the corresponding password.
+3. Confirm that a successful login returns an access token.
+4. Create an order and add an order item using valid records.
+5. Verify the response and resulting database records.
+
+## 12. Git and GitHub
+
+Before committing changes, inspect the repository:
+
+```powershell
+git status
+git diff --check
+```
+
+Stage only the intended project files, review the staged changes, and commit them with a descriptive message.
+
+Ensure `.env` and other secret files are not included in the commit.
+
+## 13. Final Setup Checklist
+
+- [ ] Clone the repository.
+- [ ] Create and activate `.venv`.
+- [ ] Install dependencies from `requirements.txt`.
+- [ ] Configure `.env` with a valid database URL and generated secret key.
+- [ ] Confirm `.env` is excluded from Git.
+- [ ] Run `SQL/schema.sql` against the intended database.
+- [ ] Verify the five application tables.
+- [ ] Start the API using Uvicorn.
+- [ ] Open Swagger UI at `/docs`.
+- [ ] Test registration, login, and order-item operations.
+- [ ] Run the automated tests.
+- [ ] Review and commit the intended changes.
+- [ ] Push the changes to GitHub.
+
+## 14. Repository
+
+GitHub: https://github.com/ngurepurity64-gif/Clothing-Store-API
