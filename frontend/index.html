@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PURE STYLE | Clothing Store</title>
+</head>
+
+<body>
+
+    <header id="home">
+        <p>PURE STYLE</p>
+        <h1>Discover Your Style</h1>
+        <p>Modern fashion. Timeless confidence.</p>
+
+        <nav aria-label="Main navigation">
+            <a href="#home">Home</a> |
+            <a href="#collection">Collection</a> |
+            <a href="#add-item">Add Item</a> |
+            <a href="#about">About Us</a> |
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <section id="welcome">
+            <h2>Fashion That Speaks for You</h2>
+
+            <p>
+                Welcome to <strong>PURE STYLE</strong>, your destination
+                for stylish, comfortable and affordable clothing.
+            </p>
+
+            <p>
+                From everyday essentials to statement pieces,
+                find clothing that expresses who you are.
+            </p>
+
+            <p><strong>YOUR STYLE. YOUR STORY.</strong></p>
+        </section>
+
+        <section id="collection">
+            <h2>Featured Collection</h2>
+
+            <p>
+                Explore our handpicked selection of clothing
+                available in our store.
+            </p>
+
+            <table>
+                <caption>Clothing Inventory and Prices</caption>
+
+                <thead>
+                    <tr>
+                        <th scope="col">Item ID</th>
+                        <th scope="col">Clothing</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Colour</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price (KSh)</th>
+                        <th scope="col">Stock Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>Classic T-Shirt</td>
+                        <td>Pure Basics</td>
+                        <td>Black</td>
+                        <td>M</td>
+                        <td>20</td>
+                        <td>800.00</td>
+                        <td>In Stock</td>
+                    </tr>
+
+                    <tr>
+                        <td>002</td>
+                        <td>Slim-Fit Jeans</td>
+                        <td>Urban Wear</td>
+                        <td>Blue</td>
+                        <td>L</td>
+                        <td>15</td>
+                        <td>1,800.00</td>
+                        <td>In Stock</td>
+                    </tr>
+
+                    <tr>
+                        <td>003</td>
+                        <td>Classic Hoodie</td>
+                        <td>Street Mode</td>
+                        <td>Grey</td>
+                        <td>XL</td>
+                        <td>0</td>
+                        <td>2,500.00</td>
+                        <td>Out of Stock</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="add-item">
+            <h2>Add a Clothing Item</h2>
+
+            <p>
+                Enter the product details below to add a new
+                item to the clothing inventory.
+            </p>
+
+            <form action="#" method="post">
+
+                <fieldset>
+                    <legend>Product Information</legend>
+
+                    <p>
+                        <label for="name">Clothing Name:</label><br>
+                        <input type="text" id="name" name="name"
+                               placeholder="e.g. Classic T-Shirt"
+                               required>
+                    </p>
+
+                    <p>
+                        <label for="brand">Brand:</label><br>
+                        <input type="text" id="brand" name="brand"
+                               placeholder="Enter brand name"
+                               required>
+                    </p>
+
+                    <p>
+                        <label for="colour">Colour:</label><br>
+                        <input type="text" id="colour" name="colour"
+                               placeholder="e.g. Black"
+                               required>
+                    </p>
+
+                    <p>
+                        <label for="size">Size:</label><br>
+                        <select id="size" name="size" required>
+                            <option value="">Choose a size</option>
+                            <option value="S">Small</option>
+                            <option value="M">Medium</option>
+                            <option value="L">Large</option>
+                            <option value="XL">Extra Large</option>
+                        </select>
+                    </p>
+
+                    <p>
+                        <label for="quantity">Quantity:</label><br>
+                        <input type="number" id="quantity"
+                               name="quantity" min="0"
+                               placeholder="Enter quantity"
+                               required>
+                    </p>
+
+                    <p>
+                        <label for="price">Price (KSh):</label><br>
+                        <input type="number" id="price" name="price"
+                               min="0" step="0.01"
+                               placeholder="Enter price"
+                               required>
+                    </p>
+
+                    <button type="submit">Add Product</button>
+                    <button type="reset">Clear Form</button>
+
+                </fieldset>
+
+            </form>
+        </section>
+
+        <section id="about">
+            <h2>Why Choose PURE STYLE?</h2>
+
+            <ul>
+                <li>Stylish clothing for different occasions</li>
+                <li>Affordable prices and quality products</li>
+                <li>Clear stock and product information</li>
+                <li>A collection designed for individual expression</li>
+            </ul>
+        </section>
+
+        <section id="contact">
+            <h2>Get in Touch</h2>
+
+            <p>
+                Have a question about our collection?
+                We would love to hear from you.
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                <a href="mailto:purestyle@example.com">
+                    purestyle@example.com
+                </a>
+            </p>
+
+            <p><strong>Location:</strong> Kenya</p>
+
+            <p><a href="#home">Back to Top</a></p>
+        </section>
+
+    </main>
+
+    <footer>
+        <hr>
+
+        <p><strong>PURE STYLE</strong> — Your Style, Your Story.</p>
+
+        <p>
+            &copy; 2026 PURE STYLE Clothing Store.
+            All rights reserved.
+        </p>
+    </footer>
+
+</body>
+
+</html>
