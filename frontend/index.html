@@ -5,217 +5,358 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover modern fashion, timeless clothing and everyday confidence at PURE STYLE.">
+
     <title>PURE STYLE | Clothing Store</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+    <!-- Moving announcement bar -->
+    <div class="announcement-bar">
+        <div class="announcement-track">
+
+            <div class="announcement-text">
+                <span class="announcement-star">✦</span> WELCOME TO PURE STYLE
+                <span class="announcement-star">✧</span> NEW COLLECTION AVAILABLE
+                <span class="announcement-star">✦</span> FASHION THAT SPEAKS FOR YOU
+                <span class="announcement-star">✧</span> DISCOVER YOUR STYLE
+            </div>
+
+            <div class="announcement-text" aria-hidden="true">
+                <span class="announcement-star">✦</span> WELCOME TO PURE STYLE
+                <span class="announcement-star">✧</span> NEW COLLECTION AVAILABLE
+                <span class="announcement-star">✦</span> FASHION THAT SPEAKS FOR YOU
+                <span class="announcement-star">✧</span> DISCOVER YOUR STYLE
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Main header -->
     <header id="home">
-        <p>PURE STYLE</p>
+
+        <p class="brand-name">PURE STYLE<span class="brand-dot">.</span></p>
+
         <h1>Discover Your Style</h1>
-        <p>Modern fashion. Timeless confidence.</p>
+
+        <p class="tagline">Modern fashion. Timeless confidence.</p>
 
         <nav aria-label="Main navigation">
-            <a href="#home">Home</a> |
-            <a href="#collection">Collection</a> |
-            <a href="#add-item">Add Item</a> |
-            <a href="#about">About Us</a> |
+            <a href="#home">Home</a>
+            <a href="#collection">Collection</a>
+            <a href="#add-item">Add Item</a>
+            <a href="#about">About Us</a>
             <a href="#contact">Contact</a>
         </nav>
+
     </header>
 
     <main>
 
-        <section id="welcome">
-            <h2>Fashion That Speaks for You</h2>
+        <!-- Welcome section -->
+        <section class="welcome-section">
 
-            <p>
-                Welcome to <strong>PURE STYLE</strong>, your destination
-                for stylish, comfortable and affordable clothing.
+            <p class="eyebrow">STYLE BEGINS HERE</p>
+
+            <h2>Wear Your Confidence</h2>
+
+            <p class="welcome-description">
+                Explore timeless pieces, discover fresh styles, and express
+                your personality with PURE STYLE.
             </p>
 
-            <p>
-                From everyday essentials to statement pieces,
-                find clothing that expresses who you are.
-            </p>
+            <a class="shop-link" href="#collection">
+                Explore Collection <span>→</span>
+            </a>
 
-            <p><strong>YOUR STYLE. YOUR STORY.</strong></p>
+            <div class="welcome-decoration" aria-hidden="true">
+                ✧
+            </div>
+
         </section>
 
-        <section id="collection">
-            <h2>Featured Collection</h2>
+        <!-- Clothing collection -->
+        <section id="collection" class="content-card">
 
-            <p>
-                Explore our handpicked selection of clothing
-                available in our store.
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">OUR SELECTION</p>
+                    <h2>Our Collection</h2>
+                </div>
+
+                <span class="collection-label">LATEST PICKS</span>
+            </div>
+
+            <p class="section-description">
+                Explore some of our featured clothing items.
             </p>
 
-            <table>
-                <caption>Clothing Inventory and Prices</caption>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Item Name</th>
+                            <th>Brand</th>
+                            <th>Colour</th>
+                            <th>Size</th>
+                            <th>Quantity</th>
+                            <th>Price (KSh)</th>
+                        </tr>
+                    </thead>
 
-                <thead>
-                    <tr>
-                        <th scope="col">Item ID</th>
-                        <th scope="col">Clothing</th>
-                        <th scope="col">Brand</th>
-                        <th scope="col">Colour</th>
-                        <th scope="col">Size</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price (KSh)</th>
-                        <th scope="col">Stock Status</th>
-                    </tr>
-                </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Classic T-Shirt</td>
+                            <td>Pure Basics</td>
+                            <td>Black</td>
+                            <td>M</td>
+                            <td>20</td>
+                            <td>850</td>
+                        </tr>
 
-                <tbody>
-                    <tr>
-                        <td>001</td>
-                        <td>Classic T-Shirt</td>
-                        <td>Pure Basics</td>
-                        <td>Black</td>
-                        <td>M</td>
-                        <td>20</td>
-                        <td>800.00</td>
-                        <td>In Stock</td>
-                    </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Slim-Fit Jeans</td>
+                            <td>Urban Wear</td>
+                            <td>Blue</td>
+                            <td>32</td>
+                            <td>12</td>
+                            <td>2,500</td>
+                        </tr>
 
-                    <tr>
-                        <td>002</td>
-                        <td>Slim-Fit Jeans</td>
-                        <td>Urban Wear</td>
-                        <td>Blue</td>
-                        <td>L</td>
-                        <td>15</td>
-                        <td>1,800.00</td>
-                        <td>In Stock</td>
-                    </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>Classic Hoodie</td>
+                            <td>Street Mode</td>
+                            <td>Grey</td>
+                            <td>L</td>
+                            <td>15</td>
+                            <td>1,800</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-                    <tr>
-                        <td>003</td>
-                        <td>Classic Hoodie</td>
-                        <td>Street Mode</td>
-                        <td>Grey</td>
-                        <td>XL</td>
-                        <td>0</td>
-                        <td>2,500.00</td>
-                        <td>Out of Stock</td>
-                    </tr>
-                </tbody>
-            </table>
+            <p class="table-note">
+                <span>✦</span>
+                Carefully selected styles for everyday confidence.
+            </p>
+
         </section>
 
-        <section id="add-item">
-            <h2>Add a Clothing Item</h2>
+        <!-- Add clothing item -->
+        <section id="add-item" class="content-card">
 
-            <p>
-                Enter the product details below to add a new
-                item to the clothing inventory.
+            <p class="eyebrow">STORE MANAGEMENT</p>
+
+            <h2>Add a New Item</h2>
+
+            <p class="section-description">
+                Enter the details of a clothing item below.
             </p>
 
             <form action="#" method="post">
 
-                <fieldset>
-                    <legend>Product Information</legend>
+                <div class="form-grid">
 
-                    <p>
-                        <label for="name">Clothing Name:</label><br>
-                        <input type="text" id="name" name="name"
-                               placeholder="e.g. Classic T-Shirt"
-                               required>
-                    </p>
+                    <div class="form-group">
+                        <label for="name">Item Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="e.g. Classic T-Shirt"
+                            required>
+                    </div>
 
-                    <p>
-                        <label for="brand">Brand:</label><br>
-                        <input type="text" id="brand" name="brand"
-                               placeholder="Enter brand name"
-                               required>
-                    </p>
+                    <div class="form-group">
+                        <label for="brand">Brand</label>
+                        <input
+                            type="text"
+                            id="brand"
+                            name="brand"
+                            placeholder="Enter brand name"
+                            required>
+                    </div>
 
-                    <p>
-                        <label for="colour">Colour:</label><br>
-                        <input type="text" id="colour" name="colour"
-                               placeholder="e.g. Black"
-                               required>
-                    </p>
+                    <div class="form-group">
+                        <label for="colour">Colour</label>
+                        <input
+                            type="text"
+                            id="colour"
+                            name="colour"
+                            placeholder="e.g. Black"
+                            required>
+                    </div>
 
-                    <p>
-                        <label for="size">Size:</label><br>
+                    <div class="form-group">
+                        <label for="size">Size</label>
                         <select id="size" name="size" required>
                             <option value="">Choose a size</option>
-                            <option value="S">Small</option>
-                            <option value="M">Medium</option>
-                            <option value="L">Large</option>
-                            <option value="XL">Extra Large</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
                         </select>
-                    </p>
+                    </div>
 
-                    <p>
-                        <label for="quantity">Quantity:</label><br>
-                        <input type="number" id="quantity"
-                               name="quantity" min="0"
-                               placeholder="Enter quantity"
-                               required>
-                    </p>
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input
+                            type="number"
+                            id="quantity"
+                            name="quantity"
+                            min="0"
+                            placeholder="Enter quantity"
+                            required>
+                    </div>
 
-                    <p>
-                        <label for="price">Price (KSh):</label><br>
-                        <input type="number" id="price" name="price"
-                               min="0" step="0.01"
-                               placeholder="Enter price"
-                               required>
-                    </p>
+                    <div class="form-group">
+                        <label for="price">Price (KSh)</label>
+                        <input
+                            type="number"
+                            id="price"
+                            name="price"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter price"
+                            required>
+                    </div>
 
-                    <button type="submit">Add Product</button>
-                    <button type="reset">Clear Form</button>
+                </div>
 
-                </fieldset>
+                <button type="submit">
+                    Add Item <span>→</span>
+                </button>
 
             </form>
-        </section>
 
-        <section id="about">
-            <h2>Why Choose PURE STYLE?</h2>
-
-            <ul>
-                <li>Stylish clothing for different occasions</li>
-                <li>Affordable prices and quality products</li>
-                <li>Clear stock and product information</li>
-                <li>A collection designed for individual expression</li>
-            </ul>
-        </section>
-
-        <section id="contact">
-            <h2>Get in Touch</h2>
-
-            <p>
-                Have a question about our collection?
-                We would love to hear from you.
+            <p class="form-note">
+                This demonstration form is not yet connected to the API.
             </p>
 
-            <p>
-                <strong>Email:</strong>
-                <a href="mailto:purestyle@example.com">
-                    purestyle@example.com
-                </a>
+        </section>
+
+        <!-- About us -->
+        <section id="about" class="content-card about-section">
+
+            <p class="eyebrow">OUR STORY</p>
+
+            <h2>About PURE STYLE</h2>
+
+            <p class="about-description">
+                PURE STYLE brings together comfort, quality and modern fashion.
+                Our goal is to help everyone find clothing that reflects their
+                personality and confidence.
             </p>
 
-            <p><strong>Location:</strong> Kenya</p>
+            <div class="values">
 
-            <p><a href="#home">Back to Top</a></p>
+                <div class="value-card">
+                    <span class="value-icon">✦</span>
+                    <h3>Quality</h3>
+                    <p>Pieces chosen with care.</p>
+                </div>
+
+                <div class="value-card">
+                    <span class="value-icon">◇</span>
+                    <h3>Style</h3>
+                    <p>Fashion for every moment.</p>
+                </div>
+
+                <div class="value-card">
+                    <span class="value-icon">♡</span>
+                    <h3>Confidence</h3>
+                    <p>Wear what feels like you.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Contact us -->
+        <section id="contact" class="content-card contact-section">
+
+            <p class="eyebrow">WE ARE HERE FOR YOU</p>
+
+            <h2>Let's Connect</h2>
+
+            <p>
+                Have a question about our collection? We would love to hear
+                from you.
+            </p>
+
+            <a class="contact-link" href="mailto:hello@purestyle.example">
+                <span class="contact-icon">✉</span>
+                hello@purestyle.example
+            </a>
+
         </section>
 
     </main>
 
+    <!-- Professional footer -->
     <footer>
-        <hr>
 
-        <p><strong>PURE STYLE</strong> — Your Style, Your Story.</p>
+        <div class="footer-top">
 
-        <p>
-            &copy; 2026 PURE STYLE Clothing Store.
-            All rights reserved.
+            <div class="footer-brand-block">
+                <a class="footer-brand" href="#home">
+                    PURE STYLE<span>.</span>
+                </a>
+
+                <p class="footer-tagline">
+                    Your style. Your story. Your confidence.
+                </p>
+
+                <p class="footer-description">
+                    Discover pieces that make every moment feel stylish.
+                </p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Explore</h3>
+                <a href="#home">Home</a>
+                <a href="#collection">Our Collection</a>
+                <a href="#add-item">Add Item</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>Discover</h3>
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+
+            <div class="footer-message">
+                <span class="footer-sparkle">✧</span>
+                <p>Wear it your way.</p>
+                <span>Fashion with personality.</span>
+            </div>
+
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 PURE STYLE. All rights reserved.</p>
+
+            <a href="#home" class="back-to-top">
+                Back to top ↑
+            </a>
+        </div>
+
+        <p class="footer-credit">
+            Designed with <span>♥</span> for fashion lovers.
         </p>
+
     </footer>
 
 </body>
-
 </html>

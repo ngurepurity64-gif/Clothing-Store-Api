@@ -6,6 +6,8 @@ Clothing Store API is a RESTful backend application built with Python, FastAPI, 
 
 The API uses Pydantic for request validation and response models. FastAPI provides interactive API documentation through Swagger UI.
 
+The project also includes a static clothing store webpage called **PURE STYLE**, built with HTML and CSS. The webpage presents clothing items, a clothing item form, information about the store, and contact details. The current webpage is a frontend design and is not yet connected to the API.
+
 ## 2. Technologies Used
 
 - Python 3
@@ -18,6 +20,8 @@ The API uses Pydantic for request validation and response models. FastAPI provid
 - Passlib
 - Python-JOSE
 - pytest
+- HTML5
+- CSS3
 - Git and GitHub
 
 ## 3. Project Structure
@@ -39,6 +43,9 @@ Clothing-Store-API/
 │   └── rows_displayed.sql
 ├── tests/
 │   └── test_main.py
+├── frontend/
+│   ├── index.html
+│   └── style.css
 ├── .env
 ├── .env.example
 ├── .gitignore
@@ -50,7 +57,7 @@ Clothing-Store-API/
 └── README.md
 ```
 
-The structure above shows the intended layout. Keep the SQL filenames consistent with the files that actually exist in the `SQL` folder.
+The structure above shows the intended layout. Keep the SQL filenames consistent with the files that actually exist in the `SQL` folder. The `frontend/` folder is the suggested location for the webpage files; update the structure if your actual HTML and CSS files are stored elsewhere.
 
 **Main files and folders:**
 
@@ -66,6 +73,8 @@ The structure above shows the intended layout. Keep the SQL filenames consistent
 - `tests/test_main.py` contains automated API tests.
 - `.env.example` provides a template for local environment configuration.
 - `requirements.txt` lists the Python dependencies.
+- `frontend/index.html` contains the semantic HTML structure of the PURE STYLE webpage.
+- `frontend/style.css` controls the webpage's colours, layout, spacing, hover effects, and responsive design.
 
 ## 4. Database Design
 
@@ -99,6 +108,8 @@ The file creates the following tables:
 - `order_items`
 - `users`
 
+The schema includes the `users` table for authentication and the corrected `order_items` table name.
+
 Run the complete `SQL/schema.sql` file against the intended PostgreSQL database using pgAdmin or another PostgreSQL client.
 
 The schema should create all five tables without requiring manually created tables from a previous database setup.
@@ -126,6 +137,8 @@ users
 ```
 
 Other tables may appear if your PostgreSQL database contains additional objects.
+
+For schema testing, use a separate test database so that the original working database and its data are not accidentally deleted.
 
 ## 6. API Endpoints
 
@@ -176,17 +189,17 @@ Confirm the exact order endpoints in `routers/orders.py` before submitting this 
 - Order-item quantity uses `Field(gt=0)` to require a positive quantity.
 - Price and unit-price values use `Decimal`.
 - User email addresses are validated using Pydantic's `EmailStr`.
-- User registration requires a password of at least eight characters.
+- User registration requires a password of at least eight characters using `Field(min_length=8)`.
 - Passwords are hashed before they are stored in the database.
 - Missing clothing and order records return appropriate HTTP error responses.
 - Database sessions are provided through FastAPI's `Depends(get_db)` dependency.
-- Response schemas use Pydantic v2 configuration where required to read SQLAlchemy model attributes.
+- Pydantic v2 schemas use `ConfigDict` where required to read SQLAlchemy model attributes.
 
 ## 8. Environment Configuration and Security
 
 The application uses environment variables for database configuration and authentication secrets.
 
-The local `.env` file should contain your actual database connection string and a securely generated secret key.
+The local `.env` file contains the actual database connection string and a securely generated secret key.
 
 Example `.env` format:
 
@@ -216,7 +229,7 @@ SECRET_KEY=YOUR_SECRET_KEY_HERE
 
 ### Step 1: Clone the repository
 
-```bash
+```powershell
 git clone https://github.com/ngurepurity64-gif/Clothing-Store-API.git
 cd Clothing-Store-API
 ```
@@ -296,7 +309,44 @@ Authentication and order-item operations should also be tested through Swagger U
 4. Create an order and add an order item using valid records.
 5. Verify the response and resulting database records.
 
-## 12. Git and GitHub
+## 12. Frontend Development — PURE STYLE
+
+The project includes a static clothing store webpage named **PURE STYLE**. It provides a visual interface for presenting clothing items and a form layout for adding clothing details.
+
+### HTML structure
+
+The webpage uses semantic HTML elements to organize the content:
+
+- `<header>` contains the store branding and navigation links.
+- `<main>` contains the main webpage content.
+- `<section>` separates the welcome, collection, item form, about, and contact areas.
+- `<table>` displays the clothing inventory.
+- `<form>` contains fields for entering clothing information.
+- `<footer>` contains additional store information and navigation links.
+
+The collection displays three hard-coded clothing items in the HTML. The item form includes fields for the item name, brand, colour, size, quantity, and price.
+
+### CSS styling and layout
+
+The external `style.css` file controls the appearance of the webpage.
+
+The design uses a midnight navy, purple, and lavender colour theme, with readable typography and consistent spacing.
+
+The styling includes:
+
+- Flexbox for navigation and flexible alignment.
+- CSS Grid for form fields, value cards, and footer columns.
+- A styled clothing table with alternating row colours and hover effects.
+- Styled form fields, labels, and buttons.
+- Rounded content cards, gradients, and subtle shadows.
+- Hover transitions on navigation links, cards, buttons, and table rows.
+- A moving announcement bar.
+- A responsive layout that adapts to smaller screens.
+- A reduced-motion setting for users who prefer fewer animations.
+
+The webpage is currently a static frontend. Its form and clothing table are not yet connected to the backend API.
+
+## 13. Git and GitHub
 
 Before committing changes, inspect the repository:
 
@@ -309,7 +359,11 @@ Stage only the intended project files, review the staged changes, and commit the
 
 Ensure `.env` and other secret files are not included in the commit.
 
-## 13. Final Setup Checklist
+Push the completed changes to GitHub after verifying the code and reviewing the commit.
+
+## 14. Final Setup and Progress Checklist
+
+### Backend and database
 
 - [ ] Clone the repository.
 - [ ] Create and activate `.venv`.
@@ -322,9 +376,27 @@ Ensure `.env` and other secret files are not included in the commit.
 - [ ] Open Swagger UI at `/docs`.
 - [ ] Test registration, login, and order-item operations.
 - [ ] Run the automated tests.
-- [ ] Review and commit the intended changes.
+
+### Frontend
+
+- [x] Create the semantic HTML structure.
+- [x] Display clothing items in a table.
+- [x] Add a clothing item form.
+- [x] Apply the navy and purple CSS theme.
+- [x] Add layout, spacing, hover effects, and visual styling.
+- [x] Add responsive styling for phone-width screens.
+- [ ] Add JavaScript variables, functions, arrays, objects, and event listeners.
+- [ ] Render a hard-coded array of clothing items using JavaScript.
+- [ ] Connect the webpage to the API using `fetch("http://127.0.0.1:8000/clothes")`.
+- [ ] Configure and test CORS for frontend-to-backend requests.
+- [ ] Render the real API response in the webpage.
+
+### Final version control steps
+
+- [ ] Review the intended changes.
+- [ ] Commit the completed work.
 - [ ] Push the changes to GitHub.
 
-## 14. Repository
+## 15. Repository
 
 GitHub: https://github.com/ngurepurity64-gif/Clothing-Store-API
