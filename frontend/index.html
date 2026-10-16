@@ -1,7 +1,5 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +8,14 @@
     <title>PURE STYLE | Clothing Store</title>
 
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 
 <body>
 
     <!-- Moving announcement bar -->
-    <div class="announcement-bar">
+    <div class="announcement-bar" aria-label="Store announcements">
         <div class="announcement-track">
-
             <div class="announcement-text">
                 <span class="announcement-star">✦</span> WELCOME TO PURE STYLE
                 <span class="announcement-star">✧</span> NEW COLLECTION AVAILABLE
@@ -31,17 +29,13 @@
                 <span class="announcement-star">✦</span> FASHION THAT SPEAKS FOR YOU
                 <span class="announcement-star">✧</span> DISCOVER YOUR STYLE
             </div>
-
         </div>
     </div>
 
     <!-- Main header -->
     <header id="home">
-
         <p class="brand-name">PURE STYLE<span class="brand-dot">.</span></p>
-
         <h1>Discover Your Style</h1>
-
         <p class="tagline">Modern fashion. Timeless confidence.</p>
 
         <nav aria-label="Main navigation">
@@ -51,17 +45,14 @@
             <a href="#about">About Us</a>
             <a href="#contact">Contact</a>
         </nav>
-
     </header>
 
     <main>
 
         <!-- Welcome section -->
-        <section class="welcome-section">
-
+        <section class="welcome-section" aria-labelledby="welcome-title">
             <p class="eyebrow">STYLE BEGINS HERE</p>
-
-            <h2>Wear Your Confidence</h2>
+            <h2 id="welcome-title">Wear Your Confidence</h2>
 
             <p class="welcome-description">
                 Explore timeless pieces, discover fresh styles, and express
@@ -72,19 +63,15 @@
                 Explore Collection <span>→</span>
             </a>
 
-            <div class="welcome-decoration" aria-hidden="true">
-                ✧
-            </div>
-
+            <div class="welcome-decoration" aria-hidden="true">✧</div>
         </section>
 
         <!-- Clothing collection -->
-        <section id="collection" class="content-card">
-
+        <section id="collection" class="content-card" aria-labelledby="collection-title">
             <div class="section-heading">
                 <div>
                     <p class="eyebrow">OUR SELECTION</p>
-                    <h2>Our Collection</h2>
+                    <h2 id="collection-title">Our Collection</h2>
                 </div>
 
                 <span class="collection-label">LATEST PICKS</span>
@@ -98,100 +85,58 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Item ID</th>
-                            <th>Item Name</th>
-                            <th>Brand</th>
-                            <th>Colour</th>
-                            <th>Size</th>
-                            <th>Quantity</th>
-                            <th>Price (KSh)</th>
+                            <th scope="col">Item ID</th>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Colour</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price (KSh)</th>
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>Classic T-Shirt</td>
-                            <td>Pure Basics</td>
-                            <td>Black</td>
-                            <td>M</td>
-                            <td>20</td>
-                            <td>850</td>
-                        </tr>
-
-                        <tr>
-                            <td>002</td>
-                            <td>Slim-Fit Jeans</td>
-                            <td>Urban Wear</td>
-                            <td>Blue</td>
-                            <td>32</td>
-                            <td>12</td>
-                            <td>2,500</td>
-                        </tr>
-
-                        <tr>
-                            <td>003</td>
-                            <td>Classic Hoodie</td>
-                            <td>Street Mode</td>
-                            <td>Grey</td>
-                            <td>L</td>
-                            <td>15</td>
-                            <td>1,800</td>
-                        </tr>
-                    </tbody>
+                    <!-- JavaScript will create the table rows -->
+                    <tbody id="clothing-list"></tbody>
                 </table>
             </div>
 
             <p class="table-note">
-                <span>✦</span>
-                Carefully selected styles for everyday confidence.
+                <span>✦</span> Carefully selected styles for everyday confidence.
             </p>
 
+            <p id="inventory-status" class="status-message" role="status" aria-live="polite">
+                Loading clothing items...
+            </p>
         </section>
 
         <!-- Add clothing item -->
-        <section id="add-item" class="content-card">
-
+        <section id="add-item" class="content-card" aria-labelledby="add-item-title">
             <p class="eyebrow">STORE MANAGEMENT</p>
-
-            <h2>Add a New Item</h2>
+            <h2 id="add-item-title">Add a New Item</h2>
 
             <p class="section-description">
                 Enter the details of a clothing item below.
             </p>
 
-            <form action="#" method="post">
-
+            <form id="clothing-form" action="#" method="post">
                 <div class="form-grid">
 
                     <div class="form-group">
                         <label for="name">Item Name</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="e.g. Classic T-Shirt"
-                            required>
+                        <input type="text" id="name" name="name"
+                               placeholder="e.g. Classic T-Shirt" required>
                     </div>
 
                     <div class="form-group">
                         <label for="brand">Brand</label>
-                        <input
-                            type="text"
-                            id="brand"
-                            name="brand"
-                            placeholder="Enter brand name"
-                            required>
+                        <input type="text" id="brand" name="brand"
+                               placeholder="Enter brand name" required>
                     </div>
 
                     <div class="form-group">
                         <label for="colour">Colour</label>
-                        <input
-                            type="text"
-                            id="colour"
-                            name="colour"
-                            placeholder="e.g. Black"
-                            required>
+                        <input type="text" id="colour" name="colour"
+                               placeholder="e.g. Black" required>
                     </div>
 
                     <div class="form-group">
@@ -209,47 +154,30 @@
 
                     <div class="form-group">
                         <label for="quantity">Quantity</label>
-                        <input
-                            type="number"
-                            id="quantity"
-                            name="quantity"
-                            min="0"
-                            placeholder="Enter quantity"
-                            required>
+                        <input type="number" id="quantity" name="quantity"
+                               min="0" step="1" placeholder="Enter quantity" required>
                     </div>
 
                     <div class="form-group">
                         <label for="price">Price (KSh)</label>
-                        <input
-                            type="number"
-                            id="price"
-                            name="price"
-                            min="0"
-                            step="0.01"
-                            placeholder="Enter price"
-                            required>
+                        <input type="number" id="price" name="price"
+                               min="0" step="0.01" placeholder="Enter price" required>
                     </div>
 
                 </div>
 
-                <button type="submit">
-                    Add Item <span>→</span>
-                </button>
+                <button type="submit">Add Item <span>→</span></button>
 
+                <p id="form-status" class="form-note" role="status" aria-live="polite">
+                    This demonstration form is not yet connected to the API.
+                </p>
             </form>
-
-            <p class="form-note">
-                This demonstration form is not yet connected to the API.
-            </p>
-
         </section>
 
         <!-- About us -->
-        <section id="about" class="content-card about-section">
-
+        <section id="about" class="content-card about-section" aria-labelledby="about-title">
             <p class="eyebrow">OUR STORY</p>
-
-            <h2>About PURE STYLE</h2>
+            <h2 id="about-title">About PURE STYLE</h2>
 
             <p class="about-description">
                 PURE STYLE brings together comfort, quality and modern fashion.
@@ -258,35 +186,30 @@
             </p>
 
             <div class="values">
-
                 <div class="value-card">
-                    <span class="value-icon">✦</span>
+                    <span class="value-icon" aria-hidden="true">✦</span>
                     <h3>Quality</h3>
                     <p>Pieces chosen with care.</p>
                 </div>
 
                 <div class="value-card">
-                    <span class="value-icon">◇</span>
+                    <span class="value-icon" aria-hidden="true">◇</span>
                     <h3>Style</h3>
                     <p>Fashion for every moment.</p>
                 </div>
 
                 <div class="value-card">
-                    <span class="value-icon">♡</span>
+                    <span class="value-icon" aria-hidden="true">♡</span>
                     <h3>Confidence</h3>
                     <p>Wear what feels like you.</p>
                 </div>
-
             </div>
-
         </section>
 
         <!-- Contact us -->
-        <section id="contact" class="content-card contact-section">
-
+        <section id="contact" class="content-card contact-section" aria-labelledby="contact-title">
             <p class="eyebrow">WE ARE HERE FOR YOU</p>
-
-            <h2>Let's Connect</h2>
+            <h2 id="contact-title">Let's Connect</h2>
 
             <p>
                 Have a question about our collection? We would love to hear
@@ -294,23 +217,19 @@
             </p>
 
             <a class="contact-link" href="mailto:hello@purestyle.example">
-                <span class="contact-icon">✉</span>
+                <span class="contact-icon" aria-hidden="true">✉</span>
                 hello@purestyle.example
             </a>
-
         </section>
 
     </main>
 
     <!-- Professional footer -->
     <footer>
-
         <div class="footer-top">
 
             <div class="footer-brand-block">
-                <a class="footer-brand" href="#home">
-                    PURE STYLE<span>.</span>
-                </a>
+                <a class="footer-brand" href="#home">PURE STYLE<span>.</span></a>
 
                 <p class="footer-tagline">
                     Your style. Your story. Your confidence.
@@ -335,7 +254,7 @@
             </div>
 
             <div class="footer-message">
-                <span class="footer-sparkle">✧</span>
+                <span class="footer-sparkle" aria-hidden="true">✧</span>
                 <p>Wear it your way.</p>
                 <span>Fashion with personality.</span>
             </div>
@@ -346,16 +265,12 @@
 
         <div class="footer-bottom">
             <p>&copy; 2026 PURE STYLE. All rights reserved.</p>
-
-            <a href="#home" class="back-to-top">
-                Back to top ↑
-            </a>
+            <a href="#home" class="back-to-top">Back to top ↑</a>
         </div>
 
         <p class="footer-credit">
             Designed with <span>♥</span> for fashion lovers.
         </p>
-
     </footer>
 
 </body>

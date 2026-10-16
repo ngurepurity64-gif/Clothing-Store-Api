@@ -1,4 +1,3 @@
-
 /* =========================================
    PURE STYLE | ELEGANT NAVY & PURPLE
    ========================================= */
@@ -12,7 +11,7 @@
     --lavender: #ddd6fe;
     --text: #f5f3ff;
     --muted: #b8bdd2;
-    --border: rgba(167, 139, 250, 0.22);
+    --border: rgba(167, 139, 250, 0.28);
 }
 
 * {
@@ -24,9 +23,6 @@ html {
     scroll-padding-top: 20px;
 }
 
-/* =========================================
-   ELEGANT BACKGROUND
-   ========================================= */
 body {
     min-height: 100vh;
     margin: 0;
@@ -37,37 +33,14 @@ body {
     line-height: 1.7;
 
     background:
-        radial-gradient(
-            circle at 50% 0%,
-            rgba(139, 92, 246, 0.24),
-            transparent 38%
-        ),
-        radial-gradient(
-            ellipse at 5% 35%,
-            rgba(91, 33, 182, 0.16),
-            transparent 35%
-        ),
-        radial-gradient(
-            ellipse at 95% 65%,
-            rgba(124, 58, 237, 0.14),
-            transparent 35%
-        ),
-        radial-gradient(
-            ellipse at 50% 100%,
-            rgba(167, 139, 250, 0.10),
-            transparent 40%
-        ),
-        linear-gradient(
-            135deg,
-            #070916 0%,
-            #10132b 35%,
-            #17102d 65%,
-            #080b18 100%
-        );
+        radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.24), transparent 38%),
+        radial-gradient(ellipse at 5% 35%, rgba(91, 33, 182, 0.16), transparent 35%),
+        radial-gradient(ellipse at 95% 65%, rgba(124, 58, 237, 0.14), transparent 35%),
+        radial-gradient(ellipse at 50% 100%, rgba(167, 139, 250, 0.10), transparent 40%),
+        linear-gradient(135deg, #070916 0%, #10132b 35%, #17102d 65%, #080b18 100%);
 
     background-attachment: fixed;
 }
-
 
 /* =========================================
    MOVING ANNOUNCEMENT BAR
@@ -127,30 +100,47 @@ body {
 }
 
 /* =========================================
-   HEADER
+   HEADER AND BRAND
    ========================================= */
 
 header {
+    position: relative;
+    overflow: hidden;
     width: min(1000px, calc(100% - 40px));
     margin: 28px auto 0;
     padding: 30px 25px 23px;
     text-align: center;
+
     background:
-        radial-gradient(
-            ellipse at 50% 0%,
-            rgba(139, 92, 246, 0.13),
-            transparent 70%
-        ),
-        linear-gradient(
-            135deg,
-            rgba(25, 27, 58, 0.97),
-            rgba(13, 19, 40, 0.98)
-        );
+        radial-gradient(ellipse at 50% 0%, rgba(139, 92, 246, 0.13), transparent 70%),
+        linear-gradient(135deg, rgba(25, 27, 58, 0.97), rgba(13, 19, 40, 0.98));
+
     border: 1px solid var(--border);
+    border-bottom: 2px solid var(--purple-bright);
     border-radius: 20px;
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.24);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease,
-                transform 0.3s ease;
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.24),
+        0 0 18px rgba(139, 92, 246, 0.10);
+
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 15%;
+    width: 70%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--lavender),
+        var(--purple),
+        transparent
+    );
+    box-shadow: 0 0 15px var(--purple);
 }
 
 header:hover {
@@ -177,6 +167,7 @@ header h1 {
     font-size: clamp(29px, 4vw, 42px);
     line-height: 1.3;
     letter-spacing: -1px;
+
     background: linear-gradient(
         90deg,
         #ffffff,
@@ -184,6 +175,7 @@ header h1 {
         #a78bfa,
         #ffffff
     );
+
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -195,7 +187,9 @@ header h1 {
     font-size: 14px;
 }
 
-/* Navigation */
+/* =========================================
+   NAVIGATION
+   ========================================= */
 
 nav {
     display: flex;
@@ -225,7 +219,7 @@ nav a:hover {
 }
 
 /* =========================================
-   MAIN CONTENT
+   MAIN CONTENT AND HEADINGS
    ========================================= */
 
 main {
@@ -268,22 +262,16 @@ h2 {
     padding: 48px 30px;
     margin-bottom: 25px;
     text-align: center;
+
     background:
-        radial-gradient(
-            ellipse at 50% 0%,
-            rgba(139, 92, 246, 0.20),
-            transparent 65%
-        ),
-        linear-gradient(
-            135deg,
-            rgba(20, 25, 49, 0.96),
-            rgba(14, 17, 36, 0.96)
-        );
+        radial-gradient(ellipse at 50% 0%, rgba(139, 92, 246, 0.20), transparent 65%),
+        linear-gradient(135deg, rgba(20, 25, 49, 0.96), rgba(14, 17, 36, 0.96));
+
     border: 1px solid var(--border);
     border-radius: 22px;
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.16);
-    transition: transform 0.3s ease, border-color 0.3s ease,
-                box-shadow 0.3s ease;
+
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .welcome-section:hover {
@@ -351,24 +339,45 @@ h2 {
 }
 
 /* =========================================
-   CONTENT CARDS: COLLECTION, FORM, ABOUT,
-   AND CONTACT
+   CONTENT CARDS
    ========================================= */
 
 .content-card {
+    position: relative;
+    overflow: hidden;
     padding: 29px;
     margin-bottom: 25px;
+
     background: linear-gradient(
         145deg,
         rgba(21, 27, 52, 0.97),
         rgba(13, 18, 37, 0.97)
     );
+
     border: 1px solid var(--border);
     border-radius: 20px;
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.16);
-    transition: border-color 0.3s ease,
-                box-shadow 0.3s ease,
-                transform 0.3s ease;
+
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.content-card::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    bottom: 20px;
+    left: 0;
+    width: 3px;
+    background: linear-gradient(
+        180deg,
+        transparent,
+        var(--purple-bright),
+        var(--lavender),
+        var(--purple-bright),
+        transparent
+    );
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.45);
+    opacity: 0.8;
 }
 
 .content-card:hover {
@@ -399,7 +408,7 @@ h2 {
 }
 
 /* =========================================
-   CLOTHING TABLE
+   CLOTHING INVENTORY TABLE
    ========================================= */
 
 .table-wrapper {
@@ -458,8 +467,14 @@ tbody tr:hover {
     color: var(--purple);
 }
 
+.status-message {
+    margin: 10px 0 0;
+    color: var(--lavender);
+    font-size: 12px;
+}
+
 /* =========================================
-   ITEM FORM
+   ADD ITEM FORM
    ========================================= */
 
 form {
@@ -544,7 +559,7 @@ button:hover {
 }
 
 /* =========================================
-   ABOUT SECTION
+   ABOUT SECTION AND VALUES
    ========================================= */
 
 .about-description {
@@ -562,17 +577,18 @@ button:hover {
 .value-card {
     padding: 21px 12px;
     text-align: center;
+
     background: linear-gradient(
         145deg,
         rgba(139, 92, 246, 0.09),
         rgba(139, 92, 246, 0.025)
     );
+
     border: 1px solid rgba(167, 139, 250, 0.16);
     border-radius: 13px;
-    transition: transform 0.25s ease,
-                background 0.25s ease,
-                border-color 0.25s ease,
-                box-shadow 0.25s ease;
+
+    transition: transform 0.25s ease, background 0.25s ease,
+        border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .value-card:hover {
@@ -612,6 +628,7 @@ button:hover {
     display: inline-flex;
     align-items: center;
     gap: 11px;
+    max-width: 100%;
     margin-top: 10px;
     padding: 10px 15px;
     color: var(--lavender);
@@ -621,9 +638,7 @@ button:hover {
     text-decoration: none;
     font-size: 13px;
     overflow-wrap: anywhere;
-    transition: background 0.25s ease,
-                border-color 0.25s ease,
-                transform 0.25s ease;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 .contact-link:hover {
@@ -639,35 +654,22 @@ button:hover {
 }
 
 /* =========================================
-   BEAUTIFIED PREMIUM FOOTER
+   PREMIUM FOOTER
    ========================================= */
 
 footer {
     position: relative;
     overflow: hidden;
     padding: 48px max(20px, calc((100% - 1000px) / 2)) 22px;
+
     background:
-        radial-gradient(
-            ellipse at 10% 0%,
-            rgba(139, 92, 246, 0.23),
-            transparent 45%
-        ),
-        radial-gradient(
-            ellipse at 90% 100%,
-            rgba(76, 29, 149, 0.19),
-            transparent 45%
-        ),
-        linear-gradient(
-            135deg,
-            #15152f,
-            #0c1021 55%,
-            #090b18
-        );
-    border-top: 1px solid rgba(167, 139, 250, 0.40);
+        radial-gradient(ellipse at 10% 0%, rgba(139, 92, 246, 0.23), transparent 45%),
+        radial-gradient(ellipse at 90% 100%, rgba(76, 29, 149, 0.19), transparent 45%),
+        linear-gradient(135deg, #15152f, #0c1021 55%, #090b18);
+
+    border-top: 2px solid rgba(167, 139, 250, 0.55);
     box-shadow: 0 -12px 40px rgba(76, 29, 149, 0.12);
 }
-
-/* Elegant glowing line */
 
 footer::before {
     content: "";
@@ -771,8 +773,6 @@ footer::before {
     transform: translateX(4px);
 }
 
-/* Footer highlight card */
-
 .footer-message {
     padding: 19px 13px;
     text-align: center;
@@ -784,9 +784,7 @@ footer::before {
     border: 1px solid rgba(167, 139, 250, 0.28);
     border-radius: 15px;
     box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.035);
-    transition: transform 0.3s ease,
-                border-color 0.3s ease,
-                box-shadow 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .footer-message:hover {
@@ -818,8 +816,6 @@ footer::before {
     font-size: 11px;
 }
 
-/* Footer divider */
-
 .footer-divider {
     height: 1px;
     margin: 32px 0 19px;
@@ -831,8 +827,6 @@ footer::before {
         transparent
     );
 }
-
-/* Copyright and back-to-top */
 
 .footer-bottom {
     display: flex;
@@ -857,9 +851,7 @@ footer::before {
     border-radius: 9px;
     text-decoration: none;
     font-size: 11px;
-    transition: background 0.25s ease,
-                border-color 0.25s ease,
-                transform 0.25s ease;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 .back-to-top:hover {
@@ -878,6 +870,16 @@ footer::before {
 
 .footer-credit span {
     color: var(--purple);
+}
+
+/* =========================================
+   ACCESSIBILITY AND KEYBOARD FOCUS
+   ========================================= */
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--lavender);
+    outline-offset: 3px;
 }
 
 /* =========================================
@@ -936,6 +938,11 @@ footer::before {
         border-radius: 16px;
     }
 
+    .content-card::before {
+        top: 12px;
+        bottom: 12px;
+    }
+
     .form-grid {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -954,6 +961,11 @@ footer::before {
         padding-right: 18px;
         font-size: 10px;
         letter-spacing: 1.2px;
+    }
+
+    th,
+    td {
+        padding: 11px 10px;
     }
 
     footer {
@@ -979,10 +991,7 @@ footer::before {
     }
 }
 
-/* =========================================
-   ACCESSIBILITY: REDUCED MOTION
-   ========================================= */
-
+/* Respect reduced-motion settings */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
