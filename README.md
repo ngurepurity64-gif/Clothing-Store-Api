@@ -1,13 +1,15 @@
 # Clothing Store API
-
 ## 1. Overview
 
-Clothing Store API is a RESTful backend application built with Python, FastAPI, PostgreSQL, and SQLAlchemy. It manages clothing inventory, customers, orders, and order items. It also provides user registration and login using password hashing and JSON Web Tokens (JWT).
+Clothing Store API is a RESTful backend application built with Python, FastAPI, PostgreSQL, and SQLAlchemy. It manages clothing inventory, customers, orders, and order items. It also supports user registration and login using password hashing and JSON Web Tokens (JWT).
 
 The API uses Pydantic for request validation and response models. FastAPI provides interactive API documentation through Swagger UI.
 
-The project also includes a static clothing store webpage called **PURE STYLE**, built with HTML and CSS. The webpage presents clothing items, a clothing item form, information about the store, and contact details. The current webpage is a frontend design and is not yet connected to the API.
+The project also includes **PURE STYLE**, a clothing store frontend built with HTML, CSS, and JavaScript. The webpage features a welcome section, featured clothing, an inventory table, a clothing item form, store information, and contact details.
 
+JavaScript connects the frontend to the backend using the Fetch API to retrieve clothing items from the `/clothes` endpoint. The webpage can display clothing records returned by the API, and the form is designed to submit new clothing items to the backend. Adding an item requires valid data and authentication where required.
+
+The backend uses PostgreSQL to store application data, while the frontend provides the user interface for viewing and interacting with the clothing inventory.
 ## 2. Technologies Used
 
 - Python 3
@@ -43,9 +45,10 @@ Clothing-Store-API/
 │   └── rows_displayed.sql
 ├── tests/
 │   └── test_main.py
-├── frontend/
-│   ├── index.html
-│   └── style.css
+frontend/
+├── index.html
+├── style.css
+└── script.js
 ├── .env
 ├── .env.example
 ├── .gitignore
@@ -311,7 +314,19 @@ Authentication and order-item operations should also be tested through Swagger U
 
 ## 12. Frontend Development — PURE STYLE
 
-The project includes a static clothing store webpage named **PURE STYLE**. It provides a visual interface for presenting clothing items and a form layout for adding clothing details.
+### Frontend functionality
+
+The PURE STYLE frontend uses HTML for its structure, CSS for styling, and JavaScript for interactive functionality.
+
+JavaScript selects HTML elements using `document.querySelector()`, stores clothing data in arrays and objects, and uses event listeners to respond to form submissions.
+
+The Fetch API retrieves clothing records from the backend endpoint `http://127.0.0.1:8000/clothes`. The returned data is displayed in the inventory table. Sample clothing data can also be used as a fallback when the API request fails.
+
+The clothing form collects item details and submits a POST request to the backend. Where authentication is required, the request includes a Bearer access token. The frontend displays status or error messages and reloads the inventory after a successful addition.
+
+The CSS provides the navy and purple theme, responsive layouts, hover effects, gradients, and other visual styling.
+
+The frontend and backend run as separate applications during development. The frontend must be served through a local web server, and the backend must be running for API integration to work. Cross-Origin Resource Sharing (CORS) must be configured appropriately on the backend.
 
 ### HTML structure
 
@@ -365,37 +380,37 @@ Push the completed changes to GitHub after verifying the code and reviewing the 
 
 ### Backend and database
 
-- [ ] Clone the repository.
-- [ ] Create and activate `.venv`.
-- [ ] Install dependencies from `requirements.txt`.
-- [ ] Configure `.env` with a valid database URL and generated secret key.
-- [ ] Confirm `.env` is excluded from Git.
-- [ ] Run `SQL/schema.sql` against the intended database.
-- [ ] Verify the five application tables.
-- [ ] Start the API using Uvicorn.
-- [ ] Open Swagger UI at `/docs`.
-- [ ] Test registration, login, and order-item operations.
-- [ ] Run the automated tests.
+-  Clone the repository.
+-  Create and activate `.venv`.
+-  Install dependencies from `requirements.txt`.
+-  Configure `.env` with a valid database URL and generated secret key.
+-  Confirm `.env` is excluded from Git.
+-  Run `SQL/schema.sql` against the intended database.
+-  Verify the five application tables.
+-  Start the API using Uvicorn.
+-  Open Swagger UI at `/docs`.
+-  Test registration, login, and order-item operations.
+-  Run the automated tests.
 
 ### Frontend
 
-- [x] Create the semantic HTML structure.
-- [x] Display clothing items in a table.
-- [x] Add a clothing item form.
-- [x] Apply the navy and purple CSS theme.
-- [x] Add layout, spacing, hover effects, and visual styling.
-- [x] Add responsive styling for phone-width screens.
-- [ ] Add JavaScript variables, functions, arrays, objects, and event listeners.
-- [ ] Render a hard-coded array of clothing items using JavaScript.
-- [ ] Connect the webpage to the API using `fetch("http://127.0.0.1:8000/clothes")`.
-- [ ] Configure and test CORS for frontend-to-backend requests.
-- [ ] Render the real API response in the webpage.
-
+-  Create the semantic HTML structure.
+-  Display clothing items in a table.
+-  Add a clothing item form.
+-  Apply the navy and purple CSS theme.
+-  Add layout, spacing, hover effects, and visual styling.
+-  Add responsive styling for phone-width screens.
+-  Add JavaScript variables, functions, arrays, objects, and event listeners.
+-  Render clothing items using JavaScript.
+-  Connect the webpage to the API using the Fetch API.
+-  Verify CORS configuration for frontend-to-backend requests.
+-  Display clothing records returned by the API.
+-  Verify successful item creation and error handling.
 ### Final version control steps
 
-- [ ] Review the intended changes.
-- [ ] Commit the completed work.
-- [ ] Push the changes to GitHub.
+-  Review the intended changes.
+-  Commit the completed work.
+-  Push the changes to GitHub.
 
 ## 15. Repository
 
