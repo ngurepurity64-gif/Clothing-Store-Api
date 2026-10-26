@@ -1646,6 +1646,414 @@ a, button, input, select, .value-card, .product-card {
   }
 }
 
+/* Clothing product grid */
+.inventory-product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin: 24px 0;
+}
+
+/* Individual product card */
+.product-card {
+    overflow: hidden;
+    border: 1px solid rgba(160, 120, 255, 0.35);
+    border-radius: 14px;
+    background: #111126;
+    box-shadow: 0 4px 18px rgba(100, 60, 200, 0.12);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(130, 80, 255, 0.25);
+}
+
+.product-image {
+    display: block;
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    background: #202038;
+}
+
+.product-image.image-unavailable {
+    height: 80px;
+    object-fit: contain;
+}
+
+.product-details {
+    padding: 16px;
+}
+
+.product-brand {
+    margin: 0 0 6px;
+    color: #b5a0ff;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.product-name {
+    margin: 0 0 10px;
+    color: #ffffff;
+    font-size: 1.15rem;
+}
+
+.product-description,
+.product-stock {
+    color: #d0cfe0;
+    font-size: 0.9rem;
+}
+
+.product-price {
+    color: #c4a5ff;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.order-button {
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    border-radius: 8px;
+    background: #7650df;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.order-button:hover:not(:disabled) {
+    background: #946fff;
+}
+
+.order-button:disabled {
+    background: #555568;
+    cursor: not-allowed;
+}
+
+.inventory-empty {
+    grid-column: 1 / -1;
+    color: #d0cfe0;
+    padding: 20px;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .inventory-product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .product-image {
+        height: 160px;
+    }
+
+    .product-details {
+        padding: 10px;
+    }
+
+    .product-name {
+        font-size: 1rem;
+    }
+}
+/* Featured collection images */
+
+.product-grid > .product-card .product-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.product-grid > .product-card .product-image-one {
+    background-image: url("images/black-jacket.jpg");
+}
+
+.product-grid > .product-card .product-image-two {
+    background-image: url("images/denim-jacket.jpg");
+}
+
+.product-grid > .product-card .product-image-three {
+    background-image: url("images/grey-hoodie.jpg");
+}
+
+
+
+/* =====================================
+   PURE STYLE - SPECIAL REQUESTS
+===================================== */
+
+#special-requests,
+#manage-item-requests {
+    width: min(1100px, 92%);
+    margin: 60px auto;
+    padding: 32px;
+    box-sizing: border-box;
+    background: rgba(25, 16, 39, 0.78);
+    border: 1px solid rgba(190, 100, 255, 0.25);
+    border-radius: 18px;
+    box-shadow: 0 0 25px rgba(157, 64, 255, 0.08);
+}
+
+/* Section headings */
+#special-requests h2,
+#manage-item-requests h2 {
+    margin: 0 0 12px;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.25;
+    color: #ffffff;
+}
+
+#special-requests > p,
+#manage-item-requests > p {
+    margin: 0 0 25px;
+    color: #d0c3df;
+    line-height: 1.7;
+}
+
+/* Request form layout */
+#special-request-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 22px;
+    margin-top: 24px;
+}
+
+#special-request-form label {
+    display: block;
+    align-self: end;
+    margin-top: 8px;
+    color: #f1e8ff;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+#special-request-form input,
+#special-request-form textarea {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 13px 14px;
+    color: #ffffff;
+    background: #100b19;
+    border: 1px solid #4b3264;
+    border-radius: 9px;
+    font: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#special-request-form input:focus,
+#special-request-form textarea:focus {
+    border-color: #c05cff;
+    box-shadow: 0 0 0 3px rgba(192, 92, 255, 0.14);
+}
+
+#special-request-form input::placeholder,
+#special-request-form textarea::placeholder {
+    color: #a99ab8;
+}
+
+#special-request-form textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+#special-request-form button,
+#load-item-requests {
+    width: fit-content;
+    padding: 13px 22px;
+    margin-top: 10px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #8b35c9, #5e2ca5);
+    border: 1px solid #b85bfa;
+    border-radius: 9px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#special-request-form button:hover,
+#load-item-requests:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 18px rgba(168, 72, 255, 0.25);
+}
+
+/* Let the description, submit button and message
+   use the full form width */
+#special-request-form label[for="request-description"],
+#request-description,
+#special-request-form button,
+#special-request-status {
+    grid-column: 1 / -1;
+}
+
+#special-request-status,
+#manage-requests-status {
+    color: #d8b8ff;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+/* Request management table */
+#manage-item-requests .table-container {
+    width: 100%;
+    margin-top: 22px;
+    overflow-x: auto;
+    border: 1px solid #382348;
+    border-radius: 12px;
+}
+
+#manage-item-requests table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+}
+
+#manage-item-requests th {
+    padding: 15px 12px;
+    color: #f7eaff;
+    background: #321d43;
+    text-align: left;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+#manage-item-requests td {
+    padding: 14px 12px;
+    color: #e6dced;
+    border-top: 1px solid #35233f;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#manage-item-requests tbody tr:hover {
+    background: rgba(150, 75, 200, 0.08);
+}
+
+#manage-item-requests td button {
+    margin: 3px;
+    padding: 8px 12px;
+    color: #ffffff;
+    background: #63329a;
+    border: 1px solid #9b5dcc;
+    border-radius: 7px;
+    cursor: pointer;
+}
+/* ==========================================
+   FIX: MAKE SPECIAL REQUEST INPUT FIELDS VISIBLE
+   Added at the bottom to override earlier CSS.
+========================================== */
+
+#special-requests #special-request-form {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px 20px !important;
+    width: 100% !important;
+    margin-top: 25px !important;
+}
+
+#special-requests #special-request-form label {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #f1e8ff !important;
+    margin: 8px 0 0 !important;
+    font-size: 14px !important;
+}
+
+#special-requests #special-request-form input,
+#special-requests #special-request-form textarea {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+    color: #ffffff !important;
+    background-color: #100b19 !important;
+    border: 1px solid #a855f7 !important;
+    border-radius: 9px !important;
+    font-size: 15px !important;
+}
+
+#special-requests #special-request-form input::placeholder,
+#special-requests #special-request-form textarea::placeholder {
+    color: #b9a6ca !important;
+    opacity: 1 !important;
+}
+
+#special-requests #special-request-form textarea {
+    min-height: 110px !important;
+    resize: vertical !important;
+}
+
+#special-requests #special-request-form label[for="request-description"],
+#special-requests #special-request-form #request-description,
+#special-requests #special-request-form button,
+#special-requests #special-request-form #special-request-status {
+    grid-column: 1 / -1 !important;
+}
+
+#special-requests #special-request-form button {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: fit-content !important;
+    min-height: 46px !important;
+    padding: 12px 24px !important;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #9333ea, #6d28d9) !important;
+    border: 1px solid #c084fc !important;
+    border-radius: 9px !important;
+    cursor: pointer !important;
+}
+
+/* Stack fields vertically on smaller screens */
+@media (max-width: 600px) {
+    #special-requests #special-request-form {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    #special-requests #special-request-form label,
+    #special-requests #special-request-form input,
+    #special-requests #special-request-form textarea,
+    #special-requests #special-request-form button {
+        grid-column: 1 / -1 !important;
+    }
+}
+
+/* Mobile layout */
+@media (max-width: 650px) {
+    #special-requests,
+    #manage-item-requests {
+        width: 94%;
+        margin: 35px auto;
+        padding: 20px;
+    }
+
+    #special-request-form {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    #special-request-form label[for="request-description"],
+    #request-description,
+    #special-request-form button,
+    #special-request-status {
+        grid-column: auto;
+    }
+
+    #special-request-form button {
+        width: 100%;
+    }
+}
+
+
 /* =========================================================
    PURE STYLE — LUXURY NEON FOOTER ENHANCEMENT
    ADD THIS BLOCK AT THE VERY BOTTOM OF style.css
@@ -1940,4 +2348,146 @@ footer::after {
 
 @media (prefers-reduced-motion: reduce) {
   .product-card:hover { transform: none; }
+}
+
+
+/* =========================================================
+   FINAL SAFETY / CONSISTENCY FIXES
+   Added without deleting or replacing any of your CSS above.
+   ========================================================= */
+
+/* Ensure all form controls use the same font and stay within their containers. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  max-width: 100%;
+}
+
+/* Special request form: keep each label and its field together when the HTML
+   groups them in a wrapper, while allowing full-width fields to span both columns. */
+#special-request-form > .form-group,
+#special-request-form > .request-field,
+#special-request-form > .form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+#special-request-form input,
+#special-request-form select,
+#special-request-form textarea {
+  min-height: 46px;
+  max-width: 100%;
+}
+
+#special-request-form textarea,
+#special-request-form button,
+#special-request-form #special-request-status,
+#special-request-form .form-note,
+#special-request-form .full-width {
+  grid-column: 1 / -1;
+}
+
+#special-request-form button {
+  justify-self: start;
+  min-height: 46px;
+}
+
+#special-request-form button:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
+#special-request-status:empty,
+#manage-requests-status:empty {
+  display: none;
+}
+
+/* Make the request-management table readable without forcing the page wider. */
+#manage-item-requests {
+  max-width: calc(100% - 28px);
+  overflow: hidden;
+}
+
+#manage-item-requests .table-container,
+#manage-item-requests .table-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#manage-item-requests table {
+  width: 100%;
+}
+
+#manage-item-requests th,
+#manage-item-requests td {
+  vertical-align: top;
+}
+
+#manage-item-requests button,
+#load-item-requests {
+  padding: 9px 13px;
+  color: #fff;
+  background: linear-gradient(115deg, #c52dff, #6815d9);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 7px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter var(--transition), transform var(--transition);
+}
+
+#manage-item-requests button:hover,
+#load-item-requests:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+#manage-item-requests button:focus-visible,
+#load-item-requests:focus-visible,
+#special-request-form textarea:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 3px;
+}
+
+/* Protect long request descriptions and phone numbers from breaking the layout. */
+#manage-item-requests td {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 650px) {
+  #special-request-form > .form-group,
+  #special-request-form > .request-field,
+  #special-request-form > .form-row {
+    grid-column: 1 / -1;
+  }
+
+  #special-request-form button {
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  #manage-item-requests {
+    max-width: calc(100% - 24px);
+    padding: 16px;
+  }
+}
+
+/* Include footer animations in the site's reduced-motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  footer::before,
+  .footer-sparkle {
+    animation: none !important;
+  }
+
+  .product-card,
+  .footer-brand,
+  .footer-column a,
+  .footer-message,
+  .back-to-top {
+    transition: none !important;
+  }
 }

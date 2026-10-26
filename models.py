@@ -97,3 +97,18 @@ class Users(Base):
     id = Column(Integer, primary_key=True)
     email = Column(String(255), unique=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
+    
+# Special requests for clothing items not in the inventory
+class ItemRequests(Base):
+    __tablename__ = "item_requests"
+
+    request_id = Column(Integer, primary_key=True, index=True)
+    customer_name = Column(String(100), nullable=False)
+    customer_phone = Column(String(20), nullable=False)
+    item_name = Column(String(100), nullable=False)
+    brand = Column(String(100), nullable=True)
+    color = Column(String(50), nullable=True)
+    size = Column(String(30), nullable=True)
+    quantity = Column(Integer, nullable=False)
+    description = Column(String(500), nullable=True)
+    status = Column(String(20), nullable=False, default="Pending")

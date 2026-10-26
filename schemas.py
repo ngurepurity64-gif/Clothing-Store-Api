@@ -93,3 +93,30 @@ class UserResponse(BaseModel):
 
     id: int
     email: EmailStr
+
+# Schema for creating a special clothing request
+class ItemRequestCreate(BaseModel):
+    customer_name: str = Field(min_length=2, max_length=100)
+    customer_phone: str = Field(min_length=7, max_length=20)
+    item_name: str = Field(min_length=2, max_length=100)
+    brand: str | None = None
+    color: str | None = None
+    size: str | None = None
+    quantity: int = Field(gt=0)
+    description: str | None = None
+
+
+# Schema for returning a special clothing request
+class ItemRequestResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    request_id: int
+    customer_name: str
+    customer_phone: str
+    item_name: str
+    brand: str | None
+    color: str | None
+    size: str | None
+    quantity: int
+    description: str | None
+    status: str

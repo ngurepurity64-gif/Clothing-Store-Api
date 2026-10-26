@@ -1,10 +1,13 @@
 
 from fastapi import FastAPI
-
-from routers import auth, clothes, customers, orders
 from fastapi.middleware.cors import CORSMiddleware
+from database import engine
+from models import Base
+from routers import auth, clothes, customers, orders, item_requests
 
 
+# Create any missing database tables
+Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Clothing Store API",
     description="API for managing clothes, customers, and orders.",
@@ -32,3 +35,4 @@ app.include_router(auth.router)
 app.include_router(clothes.router)
 app.include_router(customers.router)
 app.include_router(orders.router)
+app.include_router(item_requests.router)

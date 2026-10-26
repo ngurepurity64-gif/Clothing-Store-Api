@@ -1,18 +1,26 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Discover modern fashion, timeless clothing and everyday confidence at PURE STYLE.">
-    <meta name="theme-color" content="#0a0a14"><title>PURE STYLE | Clothing Store</title>
+    <meta name="theme-color" content="#0a0a14">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>PURE STYLE | Clothing Store</title>
 
-<link rel="stylesheet" href="style.css">
-<script src="script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-</head><body><div class="announcement-bar" aria-label="Store announcements">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement-bar" aria-label="Store announcements">
     <div class="announcement-track">
         <div class="announcement-text">
             ✦ WELCOME TO PURE STYLE
@@ -20,6 +28,7 @@
             <span>✦</span> FASHION THAT SPEAKS FOR YOU
             <span>✧</span> DISCOVER YOUR STYLE
         </div>
+
         <div class="announcement-text" aria-hidden="true">
             ✦ WELCOME TO PURE STYLE
             <span>✧</span> NEW COLLECTION AVAILABLE
@@ -29,6 +38,7 @@
     </div>
 </div>
 
+<!-- HEADER AND NAVIGATION -->
 <header id="home">
     <a class="brand-name" href="#home">PURE STYLE<span>.</span></a>
 
@@ -36,6 +46,8 @@
         <a href="#home">Home</a>
         <a href="#collection">Collection</a>
         <a href="#add-item">Add Item</a>
+        <a href="#special-requests">Request an Item</a>
+        <a href="#manage-item-requests">Manage Requests</a>
         <a href="#about">About Us</a>
         <a href="#contact">Contact</a>
     </nav>
@@ -47,7 +59,7 @@
 
 <main>
 
-    <!-- Fashion hero -->
+    <!-- HERO SECTION -->
     <section class="welcome-section" aria-labelledby="welcome-title">
 
         <div class="hero-copy">
@@ -76,7 +88,6 @@
 
         <div class="hero-visual" role="img" aria-label="Fashion editorial featuring a stylish outfit">
             <div class="hero-image"></div>
-
             <div class="hero-image-shade"></div>
 
             <div class="hero-image-caption">
@@ -98,29 +109,34 @@
 
     </section>
 
-    <!-- Brand highlights -->
+    <!-- BRAND HIGHLIGHTS -->
     <section class="brand-highlights" aria-label="Our fashion values">
+
         <div>
             <span class="highlight-icon">✳</span>
             <p>EVERYDAY ESSENTIALS</p>
         </div>
+
         <div>
             <span class="highlight-icon">◇</span>
             <p>TIMELESS STYLE</p>
         </div>
+
         <div>
             <span class="highlight-icon">✦</span>
             <p>MADE FOR YOUR MOMENTS</p>
         </div>
+
     </section>
 
-    <!-- Featured collection -->
+    <!-- FEATURED COLLECTION -->
     <section id="featured" class="featured-section" aria-labelledby="featured-title">
 
         <div class="section-heading">
             <div>
                 <p class="eyebrow">CURATED FOR YOU</p>
                 <h2 id="featured-title">The Style Edit<span>.</span></h2>
+
                 <p class="section-description">
                     A few wardrobe favourites to inspire your next look.
                 </p>
@@ -139,6 +155,7 @@
                     <span class="product-tag">EVERYDAY</span>
                     <span class="product-image-number">01</span>
                 </div>
+
                 <div class="product-info">
                     <div>
                         <p class="product-category">THE ESSENTIALS</p>
@@ -154,6 +171,7 @@
                     <span class="product-tag">MODERN FIT</span>
                     <span class="product-image-number">02</span>
                 </div>
+
                 <div class="product-info">
                     <div>
                         <p class="product-category">THE DENIM EDIT</p>
@@ -169,6 +187,7 @@
                     <span class="product-tag">NEW MOOD</span>
                     <span class="product-image-number">03</span>
                 </div>
+
                 <div class="product-info">
                     <div>
                         <p class="product-category">THE COMFORT EDIT</p>
@@ -181,54 +200,44 @@
         </div>
     </section>
 
-    <!-- Original clothing inventory table -->
-    <section id="collection" class="content-card" aria-labelledby="collection-title">
+<!-- CLOTHING COLLECTION -->
+<section id="collection" class="content-card" aria-labelledby="collection-title">
 
-        <div class="section-heading">
-            <div>
-                <p class="eyebrow">OUR SELECTION</p>
-                <h2 id="collection-title">Our Collection</h2>
-                <p class="section-description">
-                    Explore our available clothing inventory.
-                </p>
-            </div>
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">OUR SELECTION</p>
+            <h2 id="collection-title">Our Collection</h2>
 
-            <span class="collection-label">LATEST PICKS</span>
+            <p class="section-description">
+                Explore our available clothing inventory.
+            </p>
         </div>
 
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Item ID</th>
-                        <th scope="col">Item Name</th>
-                        <th scope="col">Brand</th>
-                        <th scope="col">Colour</th>
-                        <th scope="col">Size</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price (KSh)</th>
-                    </tr>
-                </thead>
-                <tbody id="clothing-list"></tbody>
-            </table>
-        </div>
+        <span class="collection-label">LATEST PICKS</span>
+    </div>
 
-        <p class="table-note">
-            <span>✦</span> Carefully selected styles for everyday confidence.
-        </p>
+    <!-- JavaScript will display the nine database products here -->
+    <div id="clothing-list" class="inventory-product-grid"></div>
 
-        <p id="inventory-status" class="status-message" role="status" aria-live="polite">
-            Loading clothing items...
-        </p>
+    <p class="table-note">
+        <span>✦</span> Carefully selected styles for everyday confidence.
+    </p>
 
-    </section>
+    <p id="inventory-status" class="status-message"
+       role="status" aria-live="polite">
+        Loading clothing items...
+    </p>
 
-    <!-- Original add-item form -->
+</section>
+
+
+    <!-- ADD NEW CLOTHING ITEM -->
     <section id="add-item" class="content-card form-section" aria-labelledby="add-item-title">
 
         <div class="form-intro">
             <p class="eyebrow">STORE MANAGEMENT</p>
             <h2 id="add-item-title">Add a New Item<span>.</span></h2>
+
             <p class="section-description">
                 Enter the details of a clothing item below.
             </p>
@@ -286,16 +295,155 @@
             <button type="submit">Add Item <span>→</span></button>
 
             <p id="form-status" class="form-note" role="status" aria-live="polite">
-                This demonstration form is not yet connected to the API.
+                Enter the clothing details to add an item.
             </p>
 
         </form>
     </section>
 
-    <!-- About us -->
+    <!-- SPECIAL ITEM REQUEST FORM -->
+    <section id="special-requests" class="content-card"
+             aria-labelledby="special-requests-title">
+
+        <p class="eyebrow">MADE FOR YOUR STYLE</p>
+
+        <h2 id="special-requests-title">Request an Item<span>.</span></h2>
+
+        <p class="section-description">
+            Can't find what you're looking for?
+            Tell us what you'd like, and we'll review your request.
+        </p>
+
+        <form id="special-request-form">
+
+            <label for="request-customer-name">Your Name</label>
+            <input
+                type="text"
+                id="request-customer-name"
+                placeholder="Enter your full name"
+                required
+                minlength="2"
+                maxlength="100"
+                autocomplete="name"
+            >
+
+            <label for="request-customer-phone">Phone Number</label>
+            <input
+                type="tel"
+                id="request-customer-phone"
+                placeholder="e.g. 0712345678"
+                required
+                minlength="7"
+                maxlength="20"
+                autocomplete="tel"
+            >
+
+            <label for="request-item-name">Clothing Item</label>
+            <input
+                type="text"
+                id="request-item-name"
+                placeholder="e.g. Red Denim Jacket"
+                required
+                minlength="2"
+                maxlength="100"
+            >
+
+            <label for="request-brand">Preferred Brand</label>
+            <input
+                type="text"
+                id="request-brand"
+                placeholder="Optional"
+                maxlength="100"
+            >
+
+            <label for="request-color">Preferred Colour</label>
+            <input
+                type="text"
+                id="request-color"
+                placeholder="e.g. Red"
+                maxlength="50"
+            >
+
+            <label for="request-size">Preferred Size</label>
+            <input
+                type="text"
+                id="request-size"
+                placeholder="e.g. M, L, 32"
+                maxlength="30"
+            >
+
+            <label for="request-quantity">Quantity</label>
+            <input
+                type="number"
+                id="request-quantity"
+                min="1"
+                step="1"
+                value="1"
+                required
+            >
+
+            <label for="request-description">Extra Details</label>
+            <textarea
+                id="request-description"
+                maxlength="500"
+                rows="4"
+                placeholder="Tell us more about the item (optional)"
+            ></textarea>
+
+            <button type="submit">Submit Request <span>→</span></button>
+
+            <p id="special-request-status" role="status" aria-live="polite"></p>
+
+        </form>
+    </section>
+
+    <!-- STORE OWNER REQUEST MANAGEMENT -->
+    <section id="manage-item-requests" class="content-card"
+             aria-labelledby="manage-requests-title">
+
+        <p class="eyebrow">STORE MANAGEMENT</p>
+
+        <h2 id="manage-requests-title">Manage Special Requests<span>.</span></h2>
+
+        <p class="section-description">
+            Store management: sign in to view requests and update their status.
+        </p>
+
+        <button type="button" id="load-item-requests">
+            Load Requests
+        </button>
+
+        <p id="manage-requests-status" role="status" aria-live="polite"></p>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Request ID</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Item</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Colour</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="item-requests-list"></tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <!-- ABOUT US -->
     <section id="about" class="content-card about-section" aria-labelledby="about-title">
 
         <p class="eyebrow">OUR STORY</p>
+
         <h2 id="about-title">About PURE STYLE<span>.</span></h2>
 
         <p class="about-description">
@@ -327,10 +475,11 @@
         </div>
     </section>
 
-    <!-- Contact us -->
+    <!-- CONTACT US -->
     <section id="contact" class="content-card contact-section" aria-labelledby="contact-title">
 
         <p class="eyebrow">WE ARE HERE FOR YOU</p>
+
         <h2 id="contact-title">Let's Connect<span>.</span></h2>
 
         <p>
@@ -347,7 +496,7 @@
 
 </main>
 
-<!-- Footer -->
+<!-- FOOTER -->
 <footer>
     <div class="footer-top">
 
@@ -368,6 +517,8 @@
             <a href="#home">Home</a>
             <a href="#collection">Our Collection</a>
             <a href="#add-item">Add Item</a>
+            <a href="#special-requests">Request an Item</a>
+            <a href="#manage-item-requests">Manage Requests</a>
         </div>
 
         <div class="footer-column">
