@@ -25,9 +25,8 @@ const clothingImages = {
     6: "images/floral-dress.jpg",
     7: "images/grey-hoodie.jpg",
     8: "images/blue-jeans.jpg",
-    9: "images/black-tshirt.jpg"
+    9: "images/black-tshirt.jpg",
 };
-
 
 /* ==========================================
    HELPER FUNCTIONS
@@ -50,9 +49,9 @@ function formatPrice(price) {
 
     return Number.isFinite(amount)
         ? amount.toLocaleString("en-KE", {
-            maximumFractionDigits: 2
+            maximumFractionDigits: 2,
         })
-        : (price || "—");
+        : price || "—";
 }
 
 // Show an error message returned by the API
@@ -66,21 +65,19 @@ async function getErrorMessage(response) {
 
         if (Array.isArray(data.detail)) {
             return data.detail
-                .map(error => error.msg || "Invalid input")
+                .map((error) => error.msg || "Invalid input")
                 .join(". ");
         }
 
         if (typeof data.message === "string") {
             return data.message;
         }
-
     } catch (error) {
         console.warn("Could not read the API error response.");
     }
 
     return "Request failed with status " + response.status + ".";
 }
-
 
 /* ==========================================
    DISPLAY CLOTHING AS PRODUCT CARDS
@@ -104,18 +101,13 @@ function displayClothes(clothes) {
 
     clothes.forEach((item, index) => {
         // Read the clothing details from the API
-        const clothingId = Number(
-            getValue(item, ["clothing_id", "id", "item_id"])
-        );
+        const clothingId = Number(getValue(item, ["clothing_id", "id", "item_id"]));
 
         const name = getValue(item, ["name", "item_name", "title"]);
         const brand = getValue(item, ["brand"]);
         const color = getValue(item, ["color", "colour"]);
         const size = getValue(item, ["size"]);
-        const quantity = getValue(
-            item,
-            ["quantity", "stock", "stock_quantity"]
-        );
+        const quantity = getValue(item, ["quantity", "stock", "stock_quantity"]);
         const price = getValue(item, ["price", "unit_price"]);
 
         // Create the product card
@@ -131,11 +123,15 @@ function displayClothes(clothes) {
         image.loading = "lazy";
 
         // Display a fallback if the image cannot be loaded
-        image.addEventListener("error", function () {
-            image.removeAttribute("src");
-            image.alt = "Product image unavailable";
-            image.classList.add("image-unavailable");
-        }, { once: true });
+        image.addEventListener(
+            "error",
+            function () {
+                image.removeAttribute("src");
+                image.alt = "Product image unavailable";
+                image.classList.add("image-unavailable");
+            },
+            { once: true },
+        );
 
         // Product information
         const details = document.createElement("div");
@@ -152,8 +148,7 @@ function displayClothes(clothes) {
         const colorSize = document.createElement("p");
         colorSize.className = "product-description";
         colorSize.textContent =
-            "Color: " + (color || "—") +
-            " | Size: " + (size || "—");
+            "Color: " + (color || "—") + " | Size: " + (size || "—");
 
         const stock = document.createElement("p");
         stock.className = "product-stock";
@@ -190,20 +185,12 @@ function displayClothes(clothes) {
         });
 
         // Put all the product details inside the card
-        details.append(
-            brandText,
-            title,
-            colorSize,
-            stock,
-            priceText,
-            orderButton
-        );
+        details.append(brandText, title, colorSize, stock, priceText, orderButton);
 
         card.append(image, details);
         clothingList.appendChild(card);
     });
 }
-
 
 /* ==========================================
    LOAD CLOTHING FROM THE DATABASE API
@@ -225,12 +212,10 @@ async function loadClothes() {
 
         const clothes = Array.isArray(data)
             ? data
-            : (data.items || data.clothes || data.results || []);
+            : data.items || data.clothes || data.results || [];
 
         if (!Array.isArray(clothes)) {
-            throw new Error(
-                "The API response did not contain a clothing list."
-            );
+            throw new Error("The API response did not contain a clothing list.");
         }
 
         displayClothes(clothes);
@@ -241,7 +226,6 @@ async function loadClothes() {
         }
 
         console.log("Clothing loaded from API:", clothes);
-
     } catch (error) {
         console.error("Could not load clothing from API:", error);
 
@@ -258,12 +242,10 @@ async function loadClothes() {
         }
 
         if (inventoryStatus) {
-            inventoryStatus.textContent =
-                "Could not connect to the clothing API.";
+            inventoryStatus.textContent = "Could not connect to the clothing API.";
         }
     }
 }
-
 
 /* ==========================================
    PLACE A CLOTHING ORDER
@@ -272,7 +254,7 @@ async function loadClothes() {
 async function startOrder(clothingId) {
     // Ask how many items the customer wants
     const quantityInput = window.prompt(
-        "How many items would you like to order?"
+        "How many items would you like to order?",
     );
 
     if (quantityInput === null) return;
@@ -299,65 +281,54 @@ async function startOrder(clothingId) {
 
     try {
         // First, try logging in to the existing account
-        let response = await fetch(
-            "http://127.0.0.1:8000/login",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: new URLSearchParams({
-                    username: email.trim(),
-                    password: password
-                })
-            }
-        );
+        let response = await fetch("http://127.0.0.1:8000/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({
+                username: email.trim(),
+                password: password,
+            }),
+        });
 
         // If login fails, offer to register a new account
         if (!response.ok) {
             const createAccount = window.confirm(
                 "Login failed. Would you like to register a new account? " +
-                "Use this only if you have not registered before."
+                "Use this only if you have not registered before.",
             );
 
             if (!createAccount) {
-                throw new Error(
-                    "Login failed. Check your email and password."
-                );
+                throw new Error("Login failed. Check your email and password.");
             }
 
-            response = await fetch(
-                "http://127.0.0.1:8000/register",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        email: email.trim(),
-                        password: password
-                    })
-                }
-            );
+            response = await fetch("http://127.0.0.1:8000/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email.trim(),
+                    password: password,
+                }),
+            });
 
             if (!response.ok) {
                 throw new Error(await getErrorMessage(response));
             }
 
             // Log in after successful registration
-            response = await fetch(
-                "http://127.0.0.1:8000/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: new URLSearchParams({
-                        username: email.trim(),
-                        password: password
-                    })
-                }
-            );
+            response = await fetch("http://127.0.0.1:8000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    username: email.trim(),
+                    password: password,
+                }),
+            });
         }
 
         if (!response.ok) {
@@ -373,21 +344,18 @@ async function startOrder(clothingId) {
 
         const authHeaders = {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
+            Authorization: "Bearer " + token,
         };
 
         // Create the customer record
-        response = await fetch(
-            "http://127.0.0.1:8000/customers",
-            {
-                method: "POST",
-                headers: authHeaders,
-                body: JSON.stringify({
-                    name: name.trim(),
-                    phone: phone.trim()
-                })
-            }
-        );
+        response = await fetch("http://127.0.0.1:8000/customers", {
+            method: "POST",
+            headers: authHeaders,
+            body: JSON.stringify({
+                name: name.trim(),
+                phone: phone.trim(),
+            }),
+        });
 
         if (!response.ok) {
             throw new Error(await getErrorMessage(response));
@@ -396,17 +364,14 @@ async function startOrder(clothingId) {
         const customer = await response.json();
 
         // Create an order for this customer
-        response = await fetch(
-            "http://127.0.0.1:8000/orders",
-            {
-                method: "POST",
-                headers: authHeaders,
-                body: JSON.stringify({
-                    customer_id: customer.customer_id,
-                    order_date: new Date().toISOString().slice(0, 10)
-                })
-            }
-        );
+        response = await fetch("http://127.0.0.1:8000/orders", {
+            method: "POST",
+            headers: authHeaders,
+            body: JSON.stringify({
+                customer_id: customer.customer_id,
+                order_date: new Date().toISOString().slice(0, 10),
+            }),
+        });
 
         if (!response.ok) {
             throw new Error(await getErrorMessage(response));
@@ -422,9 +387,9 @@ async function startOrder(clothingId) {
                 headers: authHeaders,
                 body: JSON.stringify({
                     clothing_id: clothingId,
-                    quantity: quantity
-                })
-            }
+                    quantity: quantity,
+                }),
+            },
         );
 
         if (!response.ok) {
@@ -436,16 +401,15 @@ async function startOrder(clothingId) {
 
         alert(
             "Order placed successfully!\n" +
-            "Your order number is: " + order.order_id
+            "Your order number is: " +
+            order.order_id,
         );
-
     } catch (error) {
         console.error("Order failed:", error);
 
         alert("Could not complete your order: " + error.message);
     }
 }
-
 
 /* ==========================================
    ADD NEW CLOTHING
@@ -460,7 +424,7 @@ if (clothingForm) {
         }
 
         const token = window.prompt(
-            "Enter your API access token to add a clothing item:"
+            "Enter your API access token to add a clothing item:",
         );
 
         if (token === null || token.trim() === "") {
@@ -476,12 +440,8 @@ if (clothingForm) {
             brand: document.querySelector("#brand").value.trim(),
             color: document.querySelector("#colour").value.trim(),
             size: document.querySelector("#size").value,
-            quantity: Number(
-                document.querySelector("#quantity").value
-            ),
-            price: Number(
-                document.querySelector("#price").value
-            )
+            quantity: Number(document.querySelector("#quantity").value),
+            price: Number(document.querySelector("#price").value),
         };
 
         if (
@@ -495,8 +455,7 @@ if (clothingForm) {
             item.price < 0
         ) {
             if (formStatus) {
-                formStatus.textContent =
-                    "Please enter valid details for every field.";
+                formStatus.textContent = "Please enter valid details for every field.";
             }
             return;
         }
@@ -515,9 +474,9 @@ if (clothingForm) {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + token.trim()
+                    Authorization: "Bearer " + token.trim(),
                 },
-                body: JSON.stringify(item)
+                body: JSON.stringify(item),
             });
 
             if (!response.ok) {
@@ -532,25 +491,23 @@ if (clothingForm) {
                 formStatus.textContent =
                     "Item added successfully and the collection has been refreshed.";
             }
-
         } catch (error) {
             console.error("Could not add clothing item:", error);
 
             if (formStatus) {
                 formStatus.textContent =
-                    "Could not save the item: " + error.message +
+                    "Could not save the item: " +
+                    error.message +
                     " Check your access token and backend connection.";
             }
-
         } finally {
             if (submitButton) {
                 submitButton.disabled = false;
-                submitButton.innerHTML = 'Add Item <span>→</span>';
+                submitButton.innerHTML = "Add Item <span>→</span>";
             }
         }
     });
 }
-
 
 /* ==========================================
    SPECIAL ITEM REQUESTS
@@ -560,22 +517,16 @@ if (clothingForm) {
 const REQUESTS_URL = "http://127.0.0.1:8000/item-requests";
 
 // Get the special request form and its status message
-const specialRequestForm =
-    document.querySelector("#special-request-form");
+const specialRequestForm = document.querySelector("#special-request-form");
 
-const specialRequestStatus =
-    document.querySelector("#special-request-status");
+const specialRequestStatus = document.querySelector("#special-request-status");
 
 // Get the request management elements
-const loadRequestsButton =
-    document.querySelector("#load-item-requests");
+const loadRequestsButton = document.querySelector("#load-item-requests");
 
-const manageRequestsStatus =
-    document.querySelector("#manage-requests-status");
+const manageRequestsStatus = document.querySelector("#manage-requests-status");
 
-const requestsList =
-    document.querySelector("#item-requests-list");
-
+const requestsList = document.querySelector("#item-requests-list");
 
 /* ==========================================
    SUBMIT A SPECIAL ITEM REQUEST
@@ -585,35 +536,30 @@ if (specialRequestForm) {
     specialRequestForm.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        specialRequestStatus.textContent =
-            "Submitting your request...";
+        specialRequestStatus.textContent = "Submitting your request...";
 
         // Collect the customer's information
         const requestData = {
-            customer_name:
-                document.querySelector("#request-customer-name").value.trim(),
+            customer_name: document
+                .querySelector("#request-customer-name")
+                .value.trim(),
 
-            customer_phone:
-                document.querySelector("#request-customer-phone").value.trim(),
+            customer_phone: document
+                .querySelector("#request-customer-phone")
+                .value.trim(),
 
-            item_name:
-                document.querySelector("#request-item-name").value.trim(),
+            item_name: document.querySelector("#request-item-name").value.trim(),
 
-            brand:
-                document.querySelector("#request-brand").value.trim() || null,
+            brand: document.querySelector("#request-brand").value.trim() || null,
 
-            color:
-                document.querySelector("#request-color").value.trim() || null,
+            color: document.querySelector("#request-color").value.trim() || null,
 
-            size:
-                document.querySelector("#request-size").value.trim() || null,
+            size: document.querySelector("#request-size").value.trim() || null,
 
-            quantity: Number(
-                document.querySelector("#request-quantity").value
-            ),
+            quantity: Number(document.querySelector("#request-quantity").value),
 
             description:
-                document.querySelector("#request-description").value.trim() || null
+                document.querySelector("#request-description").value.trim() || null,
         };
 
         // Check required information
@@ -629,8 +575,9 @@ if (specialRequestForm) {
             return;
         }
 
-        const requestButton =
-            specialRequestForm.querySelector('button[type="submit"]');
+        const requestButton = specialRequestForm.querySelector(
+            'button[type="submit"]',
+        );
 
         if (requestButton) {
             requestButton.disabled = true;
@@ -641,9 +588,9 @@ if (specialRequestForm) {
             const response = await fetch(REQUESTS_URL, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(requestData)
+                body: JSON.stringify(requestData),
             });
 
             if (!response.ok) {
@@ -657,14 +604,14 @@ if (specialRequestForm) {
             specialRequestStatus.textContent =
                 "Request submitted successfully! Request number: " +
                 savedRequest.request_id +
-                ". Current status: " + savedRequest.status + ".";
-
+                ". Current status: " +
+                savedRequest.status +
+                ".";
         } catch (error) {
             console.error("Special request failed:", error);
 
             specialRequestStatus.textContent =
                 "Could not submit your request: " + error.message;
-
         } finally {
             if (requestButton) {
                 requestButton.disabled = false;
@@ -672,7 +619,6 @@ if (specialRequestForm) {
         }
     });
 }
-
 
 /* ==========================================
    LOAD SPECIAL REQUESTS
@@ -682,7 +628,7 @@ async function loadItemRequests() {
     if (!requestsList) return;
 
     const token = window.prompt(
-        "Enter your API access token to view special requests:"
+        "Enter your API access token to view special requests:",
     );
 
     if (token === null || !token.trim()) {
@@ -700,8 +646,8 @@ async function loadItemRequests() {
     try {
         const response = await fetch(REQUESTS_URL, {
             headers: {
-                "Authorization": "Bearer " + token.trim()
-            }
+                Authorization: "Bearer " + token.trim(),
+            },
         });
 
         if (!response.ok) {
@@ -716,7 +662,6 @@ async function loadItemRequests() {
             manageRequestsStatus.textContent =
                 requests.length + " special request(s) loaded.";
         }
-
     } catch (error) {
         console.error("Could not load requests:", error);
 
@@ -726,7 +671,6 @@ async function loadItemRequests() {
         }
     }
 }
-
 
 /* ==========================================
    DISPLAY REQUESTS IN THE TABLE
@@ -749,7 +693,7 @@ function displayItemRequests(requests, token) {
         return;
     }
 
-    requests.forEach(request => {
+    requests.forEach((request) => {
         const row = document.createElement("tr");
 
         const values = [
@@ -762,10 +706,10 @@ function displayItemRequests(requests, token) {
             request.size || "—",
             request.quantity,
             request.description || "—",
-            request.status
+            request.status,
         ];
 
-        values.forEach(value => {
+        values.forEach((value) => {
             const cell = document.createElement("td");
             cell.textContent = String(value ?? "—");
             row.appendChild(cell);
@@ -782,7 +726,7 @@ function displayItemRequests(requests, token) {
         statusButton.addEventListener("click", async function () {
             const newStatus = window.prompt(
                 "Enter the new status: Pending, Accepted, or Rejected",
-                request.status
+                request.status,
             );
 
             if (newStatus === null) return;
@@ -792,7 +736,7 @@ function displayItemRequests(requests, token) {
             const allowedStatuses = {
                 pending: "Pending",
                 accepted: "Accepted",
-                rejected: "Rejected"
+                rejected: "Rejected",
             };
 
             if (!allowedStatuses[cleanStatus]) {
@@ -809,30 +753,26 @@ function displayItemRequests(requests, token) {
                         method: "PATCH",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": "Bearer " + token
+                            Authorization: "Bearer " + token,
                         },
                         body: JSON.stringify({
-                            status: allowedStatuses[cleanStatus]
-                        })
-                    }
+                            status: allowedStatuses[cleanStatus],
+                        }),
+                    },
                 );
 
                 if (!updateResponse.ok) {
-                    throw new Error(
-                        await getErrorMessage(updateResponse)
-                    );
+                    throw new Error(await getErrorMessage(updateResponse));
                 }
 
                 alert("Request status updated successfully.");
 
                 // Refresh the table after updating
                 await loadItemRequests();
-
             } catch (error) {
                 console.error("Could not update request:", error);
 
                 alert("Could not update status: " + error.message);
-
             } finally {
                 statusButton.disabled = false;
             }
@@ -845,7 +785,6 @@ function displayItemRequests(requests, token) {
     });
 }
 
-
 /* ==========================================
    CONNECT THE LOAD REQUESTS BUTTON
    ========================================== */
@@ -853,7 +792,6 @@ function displayItemRequests(requests, token) {
 if (loadRequestsButton) {
     loadRequestsButton.addEventListener("click", loadItemRequests);
 }
-
 
 /* ==========================================
    LOAD THE CLOTHING WHEN THE PAGE OPENS
