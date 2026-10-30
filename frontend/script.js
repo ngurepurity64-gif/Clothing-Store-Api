@@ -3,7 +3,7 @@
    ========================================== */
 
 // Backend API address
-const API_URL = "http://127.0.0.1:8000/clothes";
+const API_URL = "https://pure-style-api.onrender.com/clothes";
 
 // Get the HTML elements
 const clothingList = document.querySelector("#clothing-list");
