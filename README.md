@@ -409,22 +409,78 @@ Push the completed changes to GitHub after verifying the code and reviewing the 
 
 ## Hosted PostgreSQL Database (Neon)
 
-The application was successfully connected to a hosted PostgreSQL database using Neon.
+The PURE STYLE Clothing Store API uses a hosted PostgreSQL database provided by Neon.
 
-### Configuration and Setup
-- Created a PostgreSQL database instance on Neon.
-- Executed `SQL/schema.sql` in the Neon SQL Editor to create the database tables.
-- Imported the existing clothing records into the hosted `clothes` table.
-- Configured the `DATABASE_URL` environment variable in the local `.env` file to connect the application to Neon.
-- Kept database credentials outside the source code to protect sensitive information.
+### Database Setup
+1. Created a free PostgreSQL database instance on Neon.
+2. Executed the `SQL/schema.sql` file against the hosted database.
+3. Imported the existing clothing records into the hosted database.
+4. Updated the local `.env` file with the Neon database connection URL.
 
-### Testing and Verification
-- Started the FastAPI application locally using Uvicorn.
-- Accessed the API documentation through `/docs`.
-- Tested the `/clothes` endpoint and confirmed that the application could retrieve clothing records from the hosted database.
-- Opened the PURE STYLE frontend and confirmed that it displayed the clothing records.
+### Environment Configuration
 
-The application works with the hosted database without requiring changes to its existing application code.
+The application reads its database connection details from environment variables.
+
+```env
+DATABASE_URL=your_neon_database_connection_string
+SECRET_KEY=your_secret_key
+```
+
+**Security:** The `.env` file is excluded from Git using `.gitignore`. The actual database credentials and secret key should never be committed to GitHub. The `.env.example` file provides placeholder values.
+
+### Verification
+The application was tested locally using the hosted Neon database. The API successfully connected to the database and retrieved all nine clothing records without requiring changes to the existing application functionality.
+
+## API Deployment on Render
+
+The PURE STYLE Clothing Store API was deployed to Render using the free web service plan.
+
+### Deployment Configuration
+- **Hosting platform:** Render
+- **Service name:** pure-style-api
+- **Repository:** Clothing-Store-API
+- **Branch:** main
+- **Build command:** `pip install -r requirements.txt`
+- **Start command:**
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port $PORT
+```
+
+### Environment Variables on Render
+
+The following environment variables were configured in the Render dashboard:
+
+- `DATABASE_URL` – Neon PostgreSQL connection string.
+- `SECRET_KEY` – Secret key used for authentication.
+
+These values are configured securely in the hosting dashboard rather than being hardcoded in the application.
+
+### Live API
+
+**Public API URL:** https://pure-style-api.onrender.com
+
+**Swagger documentation:** https://pure-style-api.onrender.com/docs
+
+**Clothing records endpoint:** https://pure-style-api.onrender.com/clothes
+
+### Deployment Verification
+The deployed API was tested successfully:
+- Swagger documentation opened successfully.
+- The `/clothes` endpoint returned all nine clothing records.
+- The deployed backend successfully retrieved records from the hosted Neon database.
+
+## Frontend Integration with the Deployed API
+
+The frontend JavaScript was updated to communicate with the deployed Render API instead of the local development server.
+
+```javascript
+const API_URL = "https://pure-style-api.onrender.com/clothes";
+```
+
+The frontend retrieves clothing data by sending HTTP requests to the FastAPI backend. The backend communicates with the Neon PostgreSQL database and returns the records for display on the website.
+
+The frontend was tested using Live Server, and all nine clothing records displayed successfully.
 ### Final version control steps
 
 -  Review the intended changes.
