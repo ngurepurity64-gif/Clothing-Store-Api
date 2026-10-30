@@ -406,6 +406,25 @@ Push the completed changes to GitHub after verifying the code and reviewing the 
 -  Verify CORS configuration for frontend-to-backend requests.
 -  Display clothing records returned by the API.
 -  Verify successful item creation and error handling.
+
+## Hosted PostgreSQL Database (Neon)
+
+The application was successfully connected to a hosted PostgreSQL database using Neon.
+
+### Configuration and Setup
+- Created a PostgreSQL database instance on Neon.
+- Executed `SQL/schema.sql` in the Neon SQL Editor to create the database tables.
+- Imported the existing clothing records into the hosted `clothes` table.
+- Configured the `DATABASE_URL` environment variable in the local `.env` file to connect the application to Neon.
+- Kept database credentials outside the source code to protect sensitive information.
+
+### Testing and Verification
+- Started the FastAPI application locally using Uvicorn.
+- Accessed the API documentation through `/docs`.
+- Tested the `/clothes` endpoint and confirmed that the application could retrieve clothing records from the hosted database.
+- Opened the PURE STYLE frontend and confirmed that it displayed the clothing records.
+
+The application works with the hosted database without requiring changes to its existing application code.
 ### Final version control steps
 
 -  Review the intended changes.
