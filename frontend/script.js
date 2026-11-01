@@ -101,9 +101,7 @@ function displayClothes(clothes) {
         const card = document.createElement("article");
         card.className = "product-card";
 
-        // Create the product image
         const image = document.createElement("img");
-
         image.className = "product-image";
         image.src = item.image_url
             ? new URL(item.image_url, window.location.href).href
