@@ -16,6 +16,7 @@ class ClothesCreate(BaseModel):
     size: str
     quantity: int = Field(ge=0)
     price: Decimal
+    image_url: str | None = None
 
 
 class ClothesResponse(BaseModel):
@@ -28,6 +29,7 @@ class ClothesResponse(BaseModel):
     size: str
     quantity: int
     price: Decimal
+    image_url: str | None = None
 
 
 # =========================

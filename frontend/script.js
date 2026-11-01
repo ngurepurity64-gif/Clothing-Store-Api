@@ -14,19 +14,6 @@ const submitButton = clothingForm
     ? clothingForm.querySelector('button[type="submit"]')
     : null;
 
-// Product images.
-// Save these images inside frontend/images/
-const clothingImages = {
-    1: "images/black-jacket.jpg",
-    2: "images/trousers.jpg",
-    3: "images/pleated-skirt.jpg",
-    4: "images/white-sneakers.jpg",
-    5: "images/denim-jacket.jpg",
-    6: "images/floral-dress.jpg",
-    7: "images/grey-hoodie.jpg",
-    8: "images/blue-jeans.jpg",
-    9: "images/black-tshirt.jpg",
-};
 
 /* ==========================================
    HELPER FUNCTIONS
@@ -118,7 +105,9 @@ function displayClothes(clothes) {
         const image = document.createElement("img");
 
         image.className = "product-image";
-        image.src = clothingImages[clothingId] || "images/black-tshirt.jpg";
+        image.src = item.image_url
+            ? new URL(item.image_url, window.location.href).href
+            : "";
         image.alt = name || "Clothing product";
         image.loading = "lazy";
 

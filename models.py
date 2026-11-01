@@ -17,6 +17,7 @@ class Clothes(Base):
     size = Column(String)
     quantity = Column(Integer)
     price = Column(Numeric(10, 2))
+    image_url = Column(String, nullable=True)
 
     # Relationship with order items
     order_items = relationship(

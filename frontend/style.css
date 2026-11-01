@@ -10,6 +10,35 @@
 --border: rgba(194, 165, 255, 0.17);
 --transition: 250ms ease;
 }
+/* PURE STYLE — PREMIUM BRAND LOGO */
+
+.brand-name {
+    font-family: "Playfair Display", Georgia, serif !important;
+    font-size: 32px !important;
+    font-weight: 800 !important;
+    letter-spacing: 2px !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+
+.brand-name span {
+    color: #bd55ed !important;
+}
+
+/* Desktop logo prominence */
+@media (min-width: 901px) {
+    .brand-name {
+        font-size: 36px !important;
+    }
+}
+
+/* Mobile logo */
+@media (max-width: 600px) {
+    .brand-name {
+        font-size: 27px !important;
+    }
+}
 
 * {
   box-sizing: border-box;
@@ -298,17 +327,14 @@ overflow: hidden;
 background: #292033;
 border-radius: 3px;
 }
-
 .hero-image {
-position: absolute;
-inset: 0;
-background-image: url("https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1000&q=85");
-background-position: center 35%;
-background-size: cover;
-transform: scale(1.01);
-transition: transform 800ms ease;
+    background-image: url(https://image-cdn.hypb.st/https%3A%2F%2Fbae.hypebeast.com%2Ffiles%2F2022%2F08%2Fheron-preston-fall-winter-2022-campaign-images-1.jpg?w=1440&cbr=1&q=90&fit=max);
+    background-size: cover;
+    background-position: center 35%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
 }
-
 .hero-visual:hover .hero-image {
 transform: scale(1.06);
 }
@@ -1668,14 +1694,14 @@ a, button, input, select, .value-card, .product-card {
     transform: translateY(-5px);
     box-shadow: 0 8px 24px rgba(130, 80, 255, 0.25);
 }
-
 .product-image {
-    display: block;
     width: 100%;
-    height: 230px;
+    height: 300px;
     object-fit: cover;
-    background: #202038;
+    display: block;
+    border-radius: 12px;
 }
+
 
 .product-image.image-unavailable {
     height: 80px;
@@ -2491,3 +2517,208 @@ textarea {
     transition: none !important;
   }
 }
+
+/* ==========================================
+   PURE STYLE — FULL BACKGROUND FASHION HERO
+   Uses existing original HTML
+========================================== */
+
+.welcome-section {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr .88fr;
+    align-items: center;
+    gap: 40px;
+    min-height: 510px;
+    margin: 10px 0 35px;
+    padding: 48px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(10, 10, 20, .94),
+            rgba(10, 10, 20, .70),
+            rgba(10, 10, 20, .40)
+        ),
+        url("images/urban-fashion.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border: 1px solid rgba(194, 165, 255, .2);
+    border-radius: 5px;
+}
+/* Full background image */
+.welcome-section .hero-visual {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: -2 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    border-radius: inherit !important;
+    background: #090611 !important;
+}
+.hero-image {
+    background-image: url("images/urban-fashion.png");
+    background-size: cover;
+    background-position: center 35%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    transition: transform 500ms ease;
+}
+
+
+/* Purple-black overlay */
+.welcome-section .hero-image-shade {
+    position: absolute !important;
+    inset: 0 !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(9,6,17,.97) 0%,
+            rgba(9,6,17,.87) 28%,
+            rgba(9,6,17,.57) 48%,
+            rgba(9,6,17,.16) 78%,
+            rgba(9,6,17,.12) 100%
+        ),
+        linear-gradient(
+            0deg,
+            rgba(9,6,17,.48),
+            transparent 60%
+        ) !important;
+
+    pointer-events: none;
+}
+
+/* Original text */
+.welcome-section .hero-copy {
+    position: relative !important;
+    z-index: 3 !important;
+    grid-column: 1 / 2;
+    max-width: 540px;
+}
+
+.welcome-section .hero-copy h1 {
+    color: white;
+}
+
+.welcome-section .hero-copy h1 span {
+    color: #d6a4ff !important;
+    text-shadow: 0 0 25px rgba(160,32,240,.4);
+}
+
+.welcome-section .welcome-description {
+    color: #eee5f6 !important;
+}
+
+/* Original button */
+.welcome-section .shop-link {
+    position: relative;
+    z-index: 4;
+    background: linear-gradient(
+        115deg,
+        #c52dff,
+        #8e20f0,
+        #6815d9
+    ) !important;
+}
+
+/* Original image caption */
+.welcome-section .hero-image-caption {
+    position: absolute !important;
+    z-index: 4 !important;
+    right: 25px !important;
+    bottom: 45px !important;
+    left: auto !important;
+    max-width: 42%;
+}
+
+/* Original stamp */
+.welcome-section .hero-stamp {
+    z-index: 4 !important;
+}
+
+/* Original bottom label */
+.welcome-section .hero-bottom-label {
+    z-index: 4 !important;
+}
+
+/* Image hover */
+.welcome-section:hover .hero-image {
+    transform: scale(1.025);
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+    .welcome-section {
+        min-height: 520px !important;
+        padding: 35px !important;
+    }
+
+    .welcome-section .hero-image {
+        background-position: center 35% !important;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .welcome-section {
+        grid-template-columns: 1fr !important;
+        min-height: 680px !important;
+        padding: 35px 22px !important;
+    }
+
+    .welcome-section .hero-visual {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .welcome-section .hero-image {
+        background-position: center center !important;
+    }
+
+    .welcome-section .hero-image-shade {
+        background: linear-gradient(
+            180deg,
+            rgba(9,6,17,.98) 0%,
+            rgba(9,6,17,.88) 32%,
+            rgba(9,6,17,.28) 65%,
+            rgba(9,6,17,.55) 100%
+        ) !important;
+    }
+
+    .welcome-section .hero-copy {
+        grid-column: 1;
+    }
+
+    .welcome-section .hero-image-caption {
+        right: 18px !important;
+        bottom: 45px !important;
+        left: 18px !important;
+        max-width: 80%;
+    }
+
+    .welcome-section .hero-bottom-label {
+        right: 18px !important;
+        bottom: 12px !important;
+        left: 18px !important;
+        font-size: 7px;
+    }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+    .welcome-section .hero-image {
+        transition: none;
+    }
+}
+
+
+
+

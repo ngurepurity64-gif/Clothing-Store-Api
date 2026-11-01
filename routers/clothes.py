@@ -55,7 +55,8 @@ def create_clothes(
         color=clothes_data.color,
         size=clothes_data.size,
         quantity=clothes_data.quantity,
-        price=clothes_data.price
+        price=clothes_data.price,
+        image_url=clothes_data.image_url
     )
 
     db.add(new_clothes)
@@ -92,6 +93,7 @@ def update_clothing(
     clothing.size = clothes_data.size
     clothing.quantity = clothes_data.quantity
     clothing.price = clothes_data.price
+    clothing.image_url = clothes_data.image_url
 
     db.commit()
     db.refresh(clothing)
