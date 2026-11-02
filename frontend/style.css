@@ -1784,26 +1784,25 @@ a, button, input, select, .value-card, .product-card {
         font-size: 1rem;
     }
 }
-/* Featured collection images */
+/* FEATURED COLLECTION IMAGES */
 
-.product-grid > .product-card .product-image {
+#featured .product-image {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-.product-grid > .product-card .product-image-one {
-    background-image: url("images/black-jacket.jpg");
+#featured .product-image-one {
+    background-image: url("./images/01-classic-tee.jpg") !important;
 }
 
-.product-grid > .product-card .product-image-two {
-    background-image: url("images/denim-jacket.jpg");
+#featured .product-image-two {
+    background-image: url("./images/02-denim-jacket.jpg") !important;
 }
 
-.product-grid > .product-card .product-image-three {
-    background-image: url("images/grey-hoodie.jpg");
+#featured .product-image-three {
+    background-image: url("./images/03-hoodie.jpg") !important;
 }
-
 
 
 /* =====================================
