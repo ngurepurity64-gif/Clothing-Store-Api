@@ -3,7 +3,7 @@
    ========================================== */
 
 // Backend API address
-const API_URL = "https://pure-style-api.onrender.com/clothes";
+const API_BASE_URL = "https://pure-style-api.onrender.com";
 
 // Get the HTML elements
 const clothingList = document.querySelector("#clothing-list");
@@ -104,7 +104,7 @@ function displayClothes(clothes) {
         const image = document.createElement("img");
         image.className = "product-image";
         image.src = item.image_url
-            ? new URL(item.image_url, window.location.href).href
+            ? "/" + item.image_url.replace(/^\/+/, "")
             : "";
         image.alt = name || "Clothing product";
         image.loading = "lazy";
@@ -189,7 +189,7 @@ async function loadClothes() {
     }
 
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_BASE_URL + "/clothes");
 
         if (!response.ok) {
             throw new Error("API returned status " + response.status);
@@ -268,7 +268,7 @@ async function startOrder(clothingId) {
 
     try {
         // First, try logging in to the existing account
-        let response = await fetch("http://127.0.0.1:8000/login", {
+        let response = await fetch(API_BASE_URL + "/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -290,7 +290,7 @@ async function startOrder(clothingId) {
                 throw new Error("Login failed. Check your email and password.");
             }
 
-            response = await fetch("http://127.0.0.1:8000/register", {
+            response = await fetch(API_BASE_URL + "/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -306,7 +306,7 @@ async function startOrder(clothingId) {
             }
 
             // Log in after successful registration
-            response = await fetch("http://127.0.0.1:8000/login", {
+            response = await fetch(API_BASE_URL + "/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
@@ -335,7 +335,7 @@ async function startOrder(clothingId) {
         };
 
         // Create the customer record
-        response = await fetch("http://127.0.0.1:8000/customers", {
+        response = await fetch(API_BASE_URL + "/customers", {
             method: "POST",
             headers: authHeaders,
             body: JSON.stringify({
@@ -351,7 +351,7 @@ async function startOrder(clothingId) {
         const customer = await response.json();
 
         // Create an order for this customer
-        response = await fetch("http://127.0.0.1:8000/orders", {
+        response = await fetch(API_BASE_URL + `/orders/${order.order_id}/items`, {
             method: "POST",
             headers: authHeaders,
             body: JSON.stringify({
@@ -368,7 +368,7 @@ async function startOrder(clothingId) {
 
         // Add the selected clothing to the order
         response = await fetch(
-            `http://127.0.0.1:8000/orders/${order.order_id}/items`,
+            `${API_BASE_URL}/orders/${order.order_id}/items`,
             {
                 method: "POST",
                 headers: authHeaders,
@@ -457,7 +457,7 @@ if (clothingForm) {
         }
 
         try {
-            const response = await fetch(API_URL, {
+            const response = await fetch(API_BASE_URL + "/clothes", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -501,7 +501,7 @@ if (clothingForm) {
    ========================================== */
 
 // API address
-const REQUESTS_URL = "http://127.0.0.1:8000/item-requests";
+const REQUESTS_URL = API_BASE_URL + "/item-requests";
 
 // Get the special request form and its status message
 const specialRequestForm = document.querySelector("#special-request-form");
