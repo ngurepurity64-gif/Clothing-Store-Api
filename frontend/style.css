@@ -1786,24 +1786,17 @@ a, button, input, select, .value-card, .product-card {
 }
 /* FEATURED COLLECTION IMAGES */
 
-#featured .product-image {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
 #featured .product-image-one {
-    background-image: url("./images/01-classic-tee.jpg") !important;
+    background-image: url("./images/featured-everyday.jpg");
 }
 
 #featured .product-image-two {
-    background-image: url("./images/02-denim-jacket.jpg") !important;
+    background-image: url("./images/featured-denim.jpg");
 }
 
 #featured .product-image-three {
-    background-image: url("./images/03-hoodie.jpg") !important;
+    background-image: url("./images/featured-hoodie.jpg");
 }
-
 
 /* =====================================
    PURE STYLE - SPECIAL REQUESTS
