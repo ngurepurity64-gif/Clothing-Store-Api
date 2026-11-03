@@ -1,480 +1,506 @@
-Clothing Store API
+# PURE STYLE – Clothing Store API
 
-1. Overview
-   Clothing Store API is a RESTful backend application built with Python,
-   FastAPI, PostgreSQL, and SQLAlchemy. It manages clothing inventory,
-   customers, orders, and order items. It also supports user registration
-   and login using password hashing and JSON Web Tokens (JWT).
+## 1. Live Project Links
 
-The API uses Pydantic for request validation and response models.
-FastAPI provides interactive API documentation through Swagger UI.
+- **Live Website:** https://pure-style-clothing-store.netlify.app/
+- **Live API:** https://pure-style-api.onrender.com
+- **API Documentation (Swagger UI):** https://pure-style-api.onrender.com/docs
+- **GitHub Repository:** https://github.com/ngurepurity64-gif/Clothing-Store-API
 
-The project also includes PURE STYLE, a clothing store frontend
-built with HTML, CSS, and JavaScript. The webpage features a welcome
-section, featured clothing, an inventory table, a clothing item form,
-store information, and contact details.
+---
 
-JavaScript connects the frontend to the backend using the Fetch API to
-retrieve clothing items from the /clothes endpoint. The webpage
-displays clothing records returned by the API, and the form is designed
-to submit new clothing items to the backend. Adding an item requires
-valid data and authentication where required.
+## 2. Project Overview
 
-The backend uses PostgreSQL to store application data, while the
-frontend provides the user interface for viewing and interacting with
-the clothing inventory. 2. Technologies Used
+PURE STYLE is a clothing store web application developed to manage clothing inventory and provide an online platform for displaying clothing products.
 
-- Python 3
-- FastAPI
-- Uvicorn
-- PostgreSQL
-- SQLAlchemy
-- Pydantic
-- python-dotenv
-- Passlib
-- Python-JOSE
-- pytest
-- HTML5
-- CSS3
-- JavaScript
-- Git and GitHub
+The project consists of a frontend developed using HTML, CSS and JavaScript, and a backend developed using Python and FastAPI. The backend communicates with a PostgreSQL database to store and manage application data.
 
-3. Project Structure
-   Clothing-Store-API/
-   ├── routers/
-   │ ├── **init**.py
-   │ ├── auth.py
-   │ ├── clothes.py
-   │ ├── customers.py
-   │ └── orders.py
-   ├── SQL/
-   │ ├── schema.sql
-   │ ├── clothes_table_rows.sql
-   │ ├── create_database_clothingstore.sql
-   │ ├── insert_customers.sql
-   │ ├── join_queries.sql
-   │ └── rows_displayed.sql
-   ├── tests/
-   │ └── test_main.py
-   ├── frontend/
-   │ ├── index.html
-   │ ├── style.css
-   │ ├── script.js
-   │ └── images/
-   ├── .env.example
-   ├── .gitignore
-   ├── database.py
-   ├── main.py
-   ├── models.py
-   ├── schemas.py
-   ├── requirements.txt
-   └── README.md
-   The structure above shows the intended layout. Keep the SQL filenames
-   consistent with the files that actually exist in the SQL folder. The
-   frontend/ folder contains the webpage files; update the structure if
-   your actual filenames or folders differ.
+The frontend retrieves clothing records from the backend API using JavaScript Fetch API. The application is deployed online, with the frontend hosted on Netlify, the backend hosted on Render, and the database hosted on Neon PostgreSQL.
 
-The real .env file is intentionally not listed because it contains
-private configuration values and must remain excluded from Git.
+---
 
-Main files and folders:
+## 3. Technologies Used
 
-- main.py creates the FastAPI application and registers the routers.
-- database.py configures the database connection, sessions, and
-  get_db dependency.
-- models.py defines the SQLAlchemy database models and
-  relationships.
-- schemas.py defines Pydantic request and response schemas.
-- routers/auth.py handles user registration and login.
-- routers/clothes.py handles clothing endpoints.
-- routers/customers.py handles customer endpoints.
-- routers/orders.py handles order and order-item operations.
-- SQL/schema.sql creates the database tables.
-- tests/test_main.py contains automated API tests.
-- .env.example provides a template for local environment
-  configuration.
-- requirements.txt lists the Python dependencies.
-- frontend/index.html contains the semantic HTML structure of the
-  PURE STYLE webpage.
-- frontend/style.css controls the webpage's colours, layout,
-  spacing, hover effects, and responsive design.
-- frontend/script.js handles frontend interactions and communication
-  with the API.
+### Frontend
 
-4. Database Design
-   The application uses PostgreSQL. The database schema contains five main
-   tables.
-   Table Purpose
-   clothes Stores clothing names, brands,
-   colours, sizes, quantities, and
-   prices.
+- HTML5 – Used to structure the web pages.
+- CSS3 – Used to style and design the website.
+- JavaScript – Used to make the website interactive and communicate with the backend API.
 
-customers Stores customer information.
+### Backend
 
-orders Stores customer orders and order
-dates.
+- Python – Main programming language used for backend development.
+- FastAPI – Used to build REST API endpoints.
+- SQLAlchemy – Used to interact with the database.
+- Pydantic – Used for data validation.
+- JWT – Used for user authentication.
+- Passlib and Bcrypt – Used for password hashing.
 
-order_items Stores clothing items, quantities,
-and unit prices associated with
-orders.
-users Stores registered email addresses
-and hashed passwords.
-Relationships
+### Database
 
-- One customer can have many orders.
-- One order can contain many order items.
-- One clothing item can appear in many order items.
-  Foreign keys maintain the relationships between the related tables.
+- PostgreSQL – Used to store application data.
+- Neon – Used to host the PostgreSQL database online.
 
-5. Database Schema Setup
-   The database structure is defined in SQL/schema.sql.
+### Development and Deployment Tools
 
-The file creates the following tables:
+- Visual Studio Code – Code editor.
+- Git – Version control.
+- GitHub – Source code repository.
+- Render – Backend hosting platform.
+- Netlify – Frontend hosting platform.
+- Swagger UI – Used to test and document API endpoints.
+- Pytest and HTTPX – Used for backend testing.
 
-- clothes
-- customers
-- orders
-- order_items
-- users
-  The schema includes the users table for authentication and the
-  corrected order_items table name.
+---
 
-Run the complete SQL/schema.sql file against the intended PostgreSQL
-database using pgAdmin or another PostgreSQL client.
+## 4. Key Features
 
-The schema should create all five tables without requiring manually
-created tables from a previous database setup.
-Verify the tables
-Run this SQL query in PostgreSQL:
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-AND table_type = 'BASE TABLE'
-ORDER BY table_name;
-The expected application tables are:
-clothes
-customers
-order_items
-orders
-users
-Other tables may appear if your PostgreSQL database contains additional
-objects.
+### Backend Features
 
-For schema testing, use a separate test database so that the original
-working database and its data are not accidentally deleted. 6. API Endpoints
-The following tables describe the main API operations. Confirm the exact
-paths and methods in the running Swagger documentation at /docs,
-because the routers define the final registered endpoints.
-General
-Method Endpoint Purpose
-POST /orders Create a new order for an existing customer.
-GET /orders Retrieve all orders.
-GET /orders/{order_id} Retrieve a specific order and its items.
-POST /orders/{order_id}/items Add a clothing item to an existing order.
-Authentication
-Method Endpoint Purpose
-POST /register Register a new user.
-POST /login Authenticate a user and obtain an access token. 7. Validation and Error Handling
+- User registration and login.
+- Password hashing.
+- JWT-based authentication.
+- Clothing inventory management.
+- Customer management.
+- Order management.
+- Order-item management.
+- Item request management.
+- Input validation.
+- Error handling.
+- PostgreSQL database integration.
 
-- Clothing quantity uses Field(ge=0) to reject negative quantities.
-- Order-item quantity uses Field(gt=0) to require a positive
-  quantity.
-- Price and unit-price values use Decimal.
-- User email addresses are validated using Pydantic's EmailStr.
-- User registration requires a password of at least eight characters
-  using Field(min_length=8).
-- Passwords are hashed before they are stored in the database.
-- Missing clothing and order records return appropriate HTTP error
-  responses.
-- Database sessions are provided through FastAPI's Depends(get_db)
-  dependency.
-- Pydantic v2 schemas use ConfigDict where required to read
-  SQLAlchemy model attributes.
+### Frontend Features
 
-8. Environment Configuration and Security
-   The application uses environment variables for database configuration
-   and authentication secrets.
+- Responsive clothing store website.
+- Clothing product display.
+- Dynamic loading of clothing records from the API.
+- Clothing submission form.
+- JavaScript Fetch API integration.
+- Product images.
+- Mobile-friendly layout.
+- Navy, purple and lavender visual theme.
 
-The local .env file contains the actual database connection string and
-a securely generated secret key.
+---
 
-Example .env format:
-DATABASE_URL=postgresql+psycopg://postgres:YOUR_PASSWORD@localhost:5432/clothingstore
-SECRET_KEY=YOUR_GENERATED_SECRET_KEY
-Replace the example values with your actual local configuration. The
-values above are placeholders, not working credentials.
+## 5. Project Structure
 
-The .env.example file should contain placeholders only:
-DATABASE_URL=postgresql+psycopg://postgres:YOUR_PASSWORD@localhost:5432/clothingstore
-SECRET_KEY=YOUR_SECRET_KEY_HERE
-Security practices
+The project is organized into frontend, backend, database, SQL and testing files.
 
-- .env must be excluded from Git using .gitignore.
-- Never commit real database passwords or secret keys.
-- Use a strong, randomly generated SECRET_KEY.
-- Store hashed passwords instead of plain-text passwords.
-- Keep the example configuration free of real credentials.
+```text
+Clothing-Store-API/
+│
+├── frontend/
+│   ├── images/
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+│
+├── routers/
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── clothes.py
+│   ├── customers.py
+│   ├── orders.py
+│   └── item_requests.py
+│
+├── tests/
+│   └── test_main.py
+│
+├── SQL/
+│   ├── schema.sql
+│   ├── clothes_table_rows.sql
+│   ├── create_database_clothingstore.sql
+│   ├── insert_customers.sql
+│   ├── join_queries.sql
+│   └── rows_displayed.sql
+│
+├── database.py
+├── models.py
+├── schemas.py
+├── main.py
+├── requirements.txt
+├── .env
+├── .env.example
+├── .gitignore
+└── README.md
+```
 
-9. Installation and Setup
-   Step 1: Clone the repository
-   git clone https://github.com/ngurepurity64-gif/Clothing-Store-API.git
-   cd Clothing-Store-API
-   Step 2: Create and activate a virtual environment
-   On Windows:
-   python -m venv .venv
-   .venv\Scripts\activate
-   Step 3: Install dependencies
-   python -m pip install -r requirements.txt
-   Step 4: Create the environment file
-   copy .env.example .env
-   Edit .env and configure your PostgreSQL connection and real secret
-   key. Do not replace your working credentials with the example
-   placeholders.
-   Step 5: Create the database schema
-   Create the intended PostgreSQL database if it does not already exist.
-   Then execute SQL/schema.sql against that database.
+**Note:** The `.env` file contains private configuration values and should not be uploaded to GitHub. The `.env.example` file provides sample configuration names without exposing secret values.
 
-Ensure that DATABASE_URL in .env points to the same database where
-you created the tables.
+---
 
-For testing schema recreation, use a separate test database rather than
-dropping your working database. 10. Running the API
-Start the development server from the project root:
+## 6. Database Design
+
+The application uses PostgreSQL to store and manage its data.
+
+The database contains five main tables:
+
+| Table       | Purpose                                     |
+| ----------- | ------------------------------------------- |
+| clothes     | Stores clothing product information.        |
+| customers   | Stores customer information.                |
+| orders      | Stores customer order information.          |
+| order_items | Stores items associated with orders.        |
+| users       | Stores registered user account information. |
+
+### Clothes Table
+
+The clothes table stores clothing inventory details, including:
+
+- clothing_id – Unique identifier for each clothing item.
+- name – Name of the clothing item.
+- brand – Brand of the clothing item.
+- color – Clothing color.
+- size – Clothing size.
+- quantity – Available stock.
+- price – Price of the clothing item.
+
+The database schema is available in the `SQL/schema.sql` file.
+
+---
+
+## 7. API Endpoints
+
+The backend provides REST API endpoints for managing the application.
+
+The API can be accessed through:
+
+https://pure-style-api.onrender.com
+
+### Health Check
+
+| Method | Endpoint | Description                        |
+| ------ | -------- | ---------------------------------- |
+| GET    | /health  | Checks whether the API is running. |
+
+### Authentication
+
+| Method | Endpoint  | Description           |
+| ------ | --------- | --------------------- |
+| POST   | /register | Registers a new user. |
+| POST   | /login    | Authenticates a user. |
+
+### Clothing Management
+
+| Method | Endpoint               | Description                         |
+| ------ | ---------------------- | ----------------------------------- |
+| GET    | /clothes               | Retrieves all clothing items.       |
+| POST   | /clothes               | Adds a new clothing item.           |
+| GET    | /clothes/{clothing_id} | Retrieves a specific clothing item. |
+| PUT    | /clothes/{clothing_id} | Updates a clothing item.            |
+| DELETE | /clothes/{clothing_id} | Deletes a clothing item.            |
+
+### Customer Management
+
+| Method | Endpoint   | Description                 |
+| ------ | ---------- | --------------------------- |
+| GET    | /customers | Retrieves customer records. |
+| POST   | /customers | Adds a new customer.        |
+
+### Order Management
+
+| Method | Endpoint                 | Description                 |
+| ------ | ------------------------ | --------------------------- |
+| GET    | /orders                  | Retrieves orders.           |
+| POST   | /orders                  | Creates a new order.        |
+| GET    | /orders/{order_id}       | Retrieves a specific order. |
+| POST   | /orders/{order_id}/items | Adds an item to an order.   |
+
+### Item Requests
+
+| Method | Endpoint                    | Description                        |
+| ------ | --------------------------- | ---------------------------------- |
+| GET    | /item-requests              | Retrieves item requests.           |
+| POST   | /item-requests              | Creates an item request.           |
+| GET    | /item-requests/{request_id} | Retrieves a specific item request. |
+| PATCH  | /item-requests/{request_id} | Updates an item request.           |
+
+The interactive API documentation is available through Swagger UI:
+
+https://pure-style-api.onrender.com/docs
+
+---
+
+## 8. Installation and Setup
+
+### Requirements
+
+Before running the project locally, ensure that the following are installed:
+
+- Python 3.12 or later.
+- PostgreSQL or access to a PostgreSQL database.
+- Visual Studio Code or another code editor.
+- Git.
+- A web browser.
+
+### Step 1: Clone the Repository
+
+Open the terminal and run:
+
+```bash
+git clone https://github.com/ngurepurity64-gif/Clothing-Store-API.git
+```
+
+### Step 2: Open the Project Folder
+
+```bash
+cd Clothing-Store-API
+```
+
+### Step 3: Create a Virtual Environment
+
+```bash
+python -m venv .venv
+```
+
+### Step 4: Activate the Virtual Environment
+
+On Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+### Step 5: Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Step 6: Configure Environment Variables
+
+Create a `.env` file in the project root directory.
+
+Add the required configuration values, such as:
+
+```env
+DATABASE_URL=your_database_connection_string
+SECRET_KEY=your_secret_key
+```
+
+Replace the example values with your actual database connection string and a securely generated secret key. Do not share or commit your real `.env` file.
+
+### Step 7: Set Up the Database
+
+Create a PostgreSQL database and execute the SQL statements in:
+
+```text
+SQL/schema.sql
+```
+
+This creates the database tables required by the application.
+
+---
+
+## 9. Running the Backend API
+
+After completing the installation and database configuration, activate the virtual environment and run:
+
+```bash
 uvicorn main:app --reload
-The API will normally be available at:
+```
 
-- Base URL: http://127.0.0.1:8000
-- Swagger UI: http://127.0.0.1:8000/docs
-- Health check: http://127.0.0.1:8000/health
-  The health check should return:
-  {
-  "status": "ok"
-  }
-  Use Swagger UI to inspect the available endpoints and submit test
-  requests.
+The backend API will be available at:
 
-11. Testing
-    The project includes automated tests in tests/test_main.py.
+```text
+http://127.0.0.1:8000
+```
 
-Run the tests from the project root:
+Open the API documentation in a browser:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+Swagger UI allows users to view and test the available API endpoints.
+
+---
+
+## 10. Frontend Development and API Integration
+
+The frontend is developed using HTML, CSS and JavaScript.
+
+The main frontend files are:
+
+- `index.html` – Provides the structure of the website.
+- `style.css` – Controls the appearance and layout of the website.
+- `script.js` – Handles interactions and communication with the backend.
+
+The JavaScript Fetch API is used to retrieve clothing records from the backend.
+
+The API base URL is configured in `frontend/script.js`:
+
+```javascript
+const API_BASE_URL = "https://pure-style-api.onrender.com";
+```
+
+The frontend sends requests to the backend API to retrieve and display clothing records.
+
+The frontend does not connect directly to the PostgreSQL database. Instead, the backend API handles communication with the database.
+
+---
+
+## 11. Validation and Error Handling
+
+The application uses Pydantic schemas to validate incoming data.
+
+Validation helps ensure that the information submitted to the API follows the required data formats and conditions.
+
+The application also handles errors such as:
+
+- Missing records.
+- Invalid input data.
+- Missing authentication credentials.
+- Invalid authentication tokens.
+- Database-related errors.
+
+HTTP status codes are used to communicate the results of API requests.
+
+Examples include:
+
+| Status Code | Meaning                             |
+| ----------- | ----------------------------------- |
+| 200         | Request successful.                 |
+| 201         | Resource created successfully.      |
+| 401         | Authentication required or invalid. |
+| 404         | Requested resource not found.       |
+| 422         | Validation error.                   |
+| 500         | Internal server error.              |
+
+---
+
+## 12. Authentication and Security
+
+The application uses JWT-based authentication to protect secured API endpoints.
+
+Security features include:
+
+- User registration and login.
+- Password hashing using Bcrypt.
+- JWT access tokens.
+- Token validation.
+- Environment variables for sensitive configuration.
+- `.gitignore` to prevent private files from being uploaded to GitHub.
+
+The secret key is stored in the `.env` file and should never be exposed publicly.
+
+---
+
+## 13. Testing
+
+The backend includes tests using Pytest and HTTPX.
+
+To run the tests, execute:
+
+```bash
 python -m pytest -q
-The test suite should pass before changes are committed. Test results
-depend on the current code, configuration, and test environment.
+```
 
-Authentication and order-item operations should also be tested through
-Swagger UI where applicable:
+The tests help check whether the API behaves as expected.
 
-1. Register a user.
-2. Log in using the registered email in the login form's username
-   field and the corresponding password.
-3. Confirm that a successful login returns an access token.
-4. Create an order and add an order item using valid records.
-5. Verify the response and resulting database records.
-6. Frontend Development --- PURE STYLE
-   Frontend functionality
-   The PURE STYLE frontend uses HTML for its structure, CSS for styling,
-   and JavaScript for interactive functionality.
+The API can also be tested manually through Swagger UI:
 
-JavaScript selects HTML elements using document.querySelector(),
-stores clothing data in arrays and objects, and uses event listeners to
-respond to form submissions.
+```text
+https://pure-style-api.onrender.com/docs
+```
 
-The Fetch API retrieves clothing records from the deployed API endpoint:
+Swagger UI provides an interactive way to test API requests and view their responses.
 
-https://pure-style-api.onrender.com/clothes
+---
 
-During local development, the frontend can use the local API endpoint:
+## 14. Screenshots
 
-http://127.0.0.1:8000/clothes
+Screenshots of the project will be added in this section to demonstrate the website, API documentation and database.
 
-The returned data is displayed in the inventory table. The application
-may display a fallback message or sample data if the API request fails,
-depending on the current frontend code.
+### 14.1 PURE STYLE Homepage
 
-The clothing form collects item details and submits a POST request to
-the backend. Where authentication is required, the request includes a
-Bearer access token. The frontend displays status or error messages and
-reloads the inventory after a successful addition.
+![PURE STYLE Homepage](screenshots/homepage.png)
 
-The CSS provides the navy and purple theme, responsive layouts, hover
-effects, gradients, and other visual styling.
+### 14.2 Clothing Products Display
 
-The frontend and backend run as separate applications during
-development. The frontend must be served through a local web server, and
-the backend must be running for local API integration to work.
-Cross-Origin Resource Sharing (CORS) must be configured appropriately on
-the backend.
-HTML structure
-The webpage uses semantic HTML elements to organize the content:
+![PURE STYLE Clothing Products](screenshots/products.png)
 
-- <header> contains the store branding and navigation links.
-- <main> contains the main webpage content.
-- <section> separates the welcome, collection, item form, about, and
-  contact areas.
-- <table> displays the clothing inventory.
-- <form> contains fields for entering clothing information.
-- <footer> contains additional store information and navigation
-    links.
-  The webpage includes a featured clothing section and an inventory area.
-  The live collection displays the clothing records returned by the API.
-  The item form includes fields for the item name, brand, colour, size,
-  quantity, and price.
-  CSS styling and layout
-  The external style.css file controls the appearance of the webpage.
+### 14.3 Swagger API Documentation
 
-The design uses a midnight navy, purple, and lavender colour theme, with
-readable typography and consistent spacing.
+![PURE STYLE Swagger API Documentation](screenshots/swagger.png)
 
-The styling includes:
+### 14.4 Database Tables
 
-- Flexbox for navigation and flexible alignment.
-- CSS Grid for form fields, value cards, and footer columns.
-- A styled clothing table with alternating row colours and hover
-  effects.
-- Styled form fields, labels, and buttons.
-- Rounded content cards, gradients, and subtle shadows.
-- Hover transitions on navigation links, cards, buttons, and table
-  rows.
-- A moving announcement bar.
-- A responsive layout that adapts to smaller screens.
-- A reduced-motion setting for users who prefer fewer animations.
-  Frontend and backend connection
-  The frontend is deployed on Netlify and communicates with the deployed
-  FastAPI backend on Render. JavaScript uses the Fetch API to retrieve
-  clothing records from the backend. The backend communicates with the
-  hosted Neon PostgreSQL database and returns the records for display on
-  the website.
+![PURE STYLE PostgreSQL Database Tables](screenshots/database.png)
 
-The live PURE STYLE collection was tested and all nine clothing records
-appeared successfully. The frontend also supports submitting clothing
-items through the API, subject to the required validation and
-authentication. 13. Git and GitHub
-Before committing changes, inspect the repository:
+### 14.5 API Testing Results
+
+### 14.5 API Testing Results
+
+![PURE STYLE API Testing Results](screenshots/api-testing.png)
+
+---
+
+## 15. Deployment
+
+The project is deployed using three platforms.
+
+### Frontend Deployment – Netlify
+
+The frontend website is hosted on Netlify.
+
+Live website:
+
+https://pure-style-clothing-store.netlify.app/
+
+### Backend Deployment – Render
+
+The FastAPI backend is hosted on Render.
+
+API URL:
+
+https://pure-style-api.onrender.com
+
+Swagger documentation:
+
+https://pure-style-api.onrender.com/docs
+
+### Database Deployment – Neon
+
+The PostgreSQL database is hosted on Neon.
+
+Neon provides the database connection used by the deployed backend.
+
+---
+
+## 16. Git and GitHub
+
+Git was used for version control during development.
+
+GitHub was used to store and manage the project source code.
+
+Repository:
+
+https://github.com/ngurepurity64-gif/Clothing-Store-API
+
+Common Git commands used during development include:
+
+```bash
 git status
-git diff --check
-Stage only the intended project files, review the staged changes, and
-commit them with a descriptive message.
+git add .
+git commit -m "Update project"
+git push origin main
+```
 
-Ensure .env and other secret files are not included in the commit.
+---
 
-Push the completed changes to GitHub after verifying the code and
-reviewing the commit. 14. Final Setup and Progress Checklist
-Backend and database
+## 17. Project Status
 
-- Clone the repository.
-- Create and activate .venv.
-- Install dependencies from requirements.txt.
-- Configure .env with a valid database URL and generated secret key.
-- Confirm .env is excluded from Git.
-- Run SQL/schema.sql against the intended database.
-- Verify the five application tables.
-- Start the API using Uvicorn.
-- Open Swagger UI at /docs.
-- Test registration, login, and order-item operations.
-- Run the automated tests.
-  Frontend
-- Create the semantic HTML structure.
-- Display clothing items in a table.
-- Add a clothing item form.
-- Apply the navy and purple CSS theme.
-- Add layout, spacing, hover effects, and visual styling.
-- Add responsive styling for phone-width screens.
-- Add JavaScript variables, functions, arrays, objects, and event
-  listeners.
-- Render clothing items using JavaScript.
-- Connect the webpage to the API using the Fetch API.
-- Verify CORS configuration for frontend-to-backend requests.
-- Display clothing records returned by the API.
-- Verify successful item creation and error handling.
-  Hosted PostgreSQL Database (Neon)
-  The PURE STYLE Clothing Store API uses a hosted PostgreSQL database
-  provided by Neon.
-  Database Setup
+The project has been developed with a frontend, backend API and PostgreSQL database.
 
-1. Created a free PostgreSQL database instance on Neon.
-2. Executed the SQL/schema.sql file against the hosted database.
-3. Imported the existing clothing records into the hosted database.
-4. Updated the local .env file with the Neon database connection URL.
-   Environment Configuration
-   The application reads its database connection details from environment
-   variables.
-   DATABASE_URL=your_neon_database_connection_string
-   SECRET_KEY=your_secret_key
-   Security: The .env file is excluded from Git using .gitignore.
-   The actual database credentials and secret key should never be committed
-   to GitHub. The .env.example file provides placeholder values.
-   Verification
-   The application was tested locally using the hosted Neon database. The
-   API successfully connected to the database and retrieved all nine
-   clothing records without requiring changes to the existing application
-   functionality.
-   API Deployment on Render
-   The PURE STYLE Clothing Store API was deployed to Render using the free
-   web service plan.
-   Deployment Configuration
+The frontend is deployed on Netlify, the backend API is deployed on Render, and the database is hosted on Neon.
 
-- Hosting platform: Render
-- Service name: pure-style-api
-- Repository: Clothing-Store-API
-- Branch: main
-- Build command: pip install -r requirements.txt
-- Start command:
-  uvicorn main:app --host 0.0.0.0 --port $PORT
-  Environment Variables on Render
-  The following environment variables were configured in the Render
-  dashboard:
-- DATABASE_URL -- Neon PostgreSQL connection string.
-- SECRET_KEY -- Secret key used for authentication.
-  These values are configured securely in the hosting dashboard rather
-  than being hardcoded in the application.
-  Live API
-  Public API URL: https://pure-style-api.onrender.com
+The live website retrieves clothing records from the deployed backend API and displays the available products.
 
-Swagger documentation: https://pure-style-api.onrender.com/docs
+---
 
-Clothing records endpoint:
-https://pure-style-api.onrender.com/clothes
-Deployment Verification
-The deployed API was tested successfully:
+## 18. Conclusion
 
-- Swagger documentation opened successfully.
-- The /clothes endpoint returned all nine clothing records.
-- The deployed backend successfully retrieved records from the hosted
-  Neon database.
-  Frontend Deployment on Netlify
-  The PURE STYLE frontend is hosted on Netlify.
+PURE STYLE demonstrates the development of a clothing store application using frontend web technologies, Python, FastAPI and PostgreSQL.
 
-Live Website: https://pure-style-clothing-store.netlify.app/
-
-The frontend communicates with the deployed FastAPI backend hosted on
-Render.
-Frontend Integration with the Deployed API
-The frontend JavaScript is configured to communicate with the deployed
-Render API instead of the local development server when the website is
-deployed.
-const API_URL = "https://pure-style-api.onrender.com/clothes";
-The frontend retrieves clothing data by sending HTTP requests to the
-FastAPI backend. The backend communicates with the Neon PostgreSQL
-database and returns the records for display on the website.
-
-The frontend was tested using Live Server, and all nine clothing records
-displayed successfully. The live Netlify website is also deployed and
-uses the Render API.
-Final version control steps
-
-- Review the intended changes.
-- Commit the completed work.
-- Push the changes to GitHub.
-
-15. Repository
-    GitHub: https://github.com/ngurepurity64-gif/Clothing-Store-API
-16. Live Project Links
-
-- PURE STYLE Website:
-  https://pure-style-clothing-store.netlify.app/
-- Live API: https://pure-style-api.onrender.com
-- Swagger API Documentation:
-  https://pure-style-api.onrender.com/docs
-- Clothing Records: https://pure-style-api.onrender.com/clothes
-- GitHub Repository:
-  https://github.com/ngurepurity64-gif/Clothing-Store-API
+The project provides practical experience in frontend development, REST API development, database management, authentication, validation, testing, version control and deployment.

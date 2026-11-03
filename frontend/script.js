@@ -4,7 +4,6 @@
 
 // Backend API address
 const API_BASE_URL = "https://pure-style-api.onrender.com";
-
 // Get the HTML elements
 const clothingList = document.querySelector("#clothing-list");
 const inventoryStatus = document.querySelector("#inventory-status");
@@ -103,9 +102,11 @@ function displayClothes(clothes) {
 
         const image = document.createElement("img");
         image.className = "product-image";
+
         image.src = item.image_url
-            ? "/" + item.image_url.replace(/^\/+/, "")
+            ? "./" + item.image_url.replace(/^\/+/, "")
             : "";
+
         image.alt = name || "Clothing product";
         image.loading = "lazy";
 
