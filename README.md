@@ -19,6 +19,32 @@ The frontend retrieves clothing records from the backend API using JavaScript Fe
 
 ---
 
+## Demo Account Access
+
+PURE STYLE supports user registration and secure authentication using JSON Web Tokens (JWT).
+
+New users can create an account through the website and log in to access the application's authentication features.
+
+### Getting Started
+
+1. Visit the live application: https://pure-style-clothing-store.netlify.app/
+2. Navigate to the registration section.
+3. Create an account using a valid email address and password.
+4. Log in using your registered credentials.
+5. Once authenticated, you can access the available features according to your account permissions.
+
+### API Authentication
+
+The API also supports authentication through Swagger UI:
+
+- API Documentation: https://pure-style-api.onrender.com/docs
+- Registration endpoint: `POST /register`
+- Login endpoint: `POST /login`
+
+Authentication is handled using JWT access tokens to protect restricted API endpoints.
+
+**Note:** Users should register their own accounts. No personal account credentials are published in this repository.
+
 ## 3. Technologies Used
 
 ### Frontend
