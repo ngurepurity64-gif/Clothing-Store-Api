@@ -106,7 +106,46 @@ Authentication is handled using JWT access tokens to protect restricted API endp
 - Mobile-friendly layout.
 - Navy, purple and lavender visual theme.
 
----
+- Admin dashboard for managing store operations.
+- Customer management screen for viewing active customer profiles.
+- Order management screen for viewing customer orders.
+- Special request management with status updates.
+- Role-based visibility of administrator features.
+
+### User Roles and Permissions
+
+The application supports two user roles:
+
+**Customer**
+
+- Register and log in.
+- Browse available clothing.
+- Place clothing orders.
+- Submit special item requests.
+- View their permitted account information.
+
+**Administrator**
+
+- Log in using an administrator account.
+- Add clothing items.
+- View customer profiles.
+- View and manage customer orders.
+- View and update special item requests.
+
+Access to restricted API endpoints is controlled through authentication and role-based authorization.
+
+### Order Processing
+
+The application supports order creation and order-item management.
+
+When a customer places an order:
+
+1. The customer selects an available clothing item.
+2. The system checks the customer's authentication and profile.
+3. An order is created.
+4. The selected clothing item is added to the order.
+5. The available clothing stock is updated.
+6. The administrator can view the order through the management section.
 
 ## 5. Project Structure
 
@@ -205,6 +244,31 @@ https://pure-style-api.onrender.com
 | ------ | --------- | --------------------- |
 | POST   | /register | Registers a new user. |
 | POST   | /login    | Authenticates a user. |
+
+#### Current User and Profile Endpoints
+
+These endpoints allow authenticated users to retrieve their account information and customer profile.
+
+| Method | Endpoint        | Description                                                                                      | Access                  |
+| ------ | --------------- | ------------------------------------------------------------------------------------------------ | ----------------------- |
+| GET    | `/me`           | Retrieves details of the currently logged-in user, including their account information and role. | Authenticated users     |
+| GET    | `/customers/me` | Retrieves the customer profile associated with the currently logged-in customer.                 | Authenticated customers |
+
+**Endpoint details:**
+
+**1. GET `/me` – Get Current User**
+
+- Returns information about the user making the request.
+- Requires a valid JWT access token.
+- Helps the application identify the logged-in user and their role (customer or admin).
+- Returns an authentication error if the token is missing or invalid.
+
+**2. GET `/customers/me` – Get Current Customer Profile**
+
+- Retrieves the customer profile belonging to the logged-in customer.
+- Requires a valid JWT access token.
+- Allows customers to access their own profile without viewing another customer's private information.
+- Returns an appropriate error if the customer profile does not exist.
 
 ### Clothing Management
 
