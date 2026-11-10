@@ -778,7 +778,28 @@ box-shadow: 0 0 0 3px rgba(155, 112, 255, .12);
 color-scheme: dark;
 cursor: pointer;
 }
+/* Password visibility toggle */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 45px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 5px;
+  color: inherit;
+}
 #clothing-form button {
 display: inline-flex;
 align-items: center;

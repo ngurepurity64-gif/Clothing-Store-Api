@@ -76,4 +76,9 @@ def get_customers(
     db: Session = Depends(get_db),
     current_user: Users = Depends(require_admin)
 ):
-    return db.query(Customers).all()
+    return (
+    db.query(Customers)
+    .join(Users, Customers.user_id == Users.id)
+    .filter(Users.role == "customer")
+    .all()
+)

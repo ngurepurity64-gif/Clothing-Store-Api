@@ -945,6 +945,218 @@ function displayItemRequests(requests, token) {
 }
 
 /* ==========================================
+   ADMIN: MANAGE CUSTOMERS
+   ========================================== */
+
+const loadCustomersButton = document.querySelector("#load-customers");
+const manageCustomersStatus = document.querySelector("#manage-customers-status");
+const customersList = document.querySelector("#customers-list");
+
+async function loadCustomers() {
+    if (!customersList || !manageCustomersStatus) return;
+
+    if (!getAuthToken()) {
+        manageCustomersStatus.textContent =
+            "Please log in as an administrator to view customers.";
+        return;
+    }
+
+    manageCustomersStatus.textContent = "Loading customers...";
+    loadCustomersButton.disabled = true;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/customers`, {
+            headers: getAuthHeaders(),
+        });
+
+        if (!response.ok) {
+            throw new Error(await getErrorMessage(response));
+        }
+
+        const customers = await response.json();
+
+        customersList.replaceChildren();
+
+        if (!Array.isArray(customers) || customers.length === 0) {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 3;
+            cell.textContent = "No customer profiles found.";
+
+            row.appendChild(cell);
+            customersList.appendChild(row);
+        } else {
+            customers.forEach((customer) => {
+                const row = document.createElement("tr");
+
+                [
+                    customer.customer_id,
+                    customer.name,
+                    customer.phone,
+                ].forEach((value) => {
+                    const cell = document.createElement("td");
+                    cell.textContent = String(value ?? "—");
+                    row.appendChild(cell);
+                });
+
+                customersList.appendChild(row);
+            });
+        }
+
+        manageCustomersStatus.textContent =
+            `${customers.length} customer(s) loaded successfully.`;
+
+    } catch (error) {
+        console.error("Could not load customers:", error);
+
+        manageCustomersStatus.textContent =
+            "Could not load customers: " + error.message;
+    } finally {
+        loadCustomersButton.disabled = false;
+    }
+}
+
+if (loadCustomersButton) {
+    loadCustomersButton.addEventListener("click", loadCustomers);
+}
+
+
+/* ==========================================
+   ADMIN: MANAGE ORDERS
+   ========================================== */
+
+const loadOrdersButton = document.querySelector("#load-orders");
+const manageOrdersStatus = document.querySelector("#manage-orders-status");
+const ordersList = document.querySelector("#orders-list");
+
+async function loadOrders() {
+    if (!ordersList || !manageOrdersStatus) return;
+
+    if (!getAuthToken()) {
+        manageOrdersStatus.textContent =
+            "Please log in as an administrator to view orders.";
+        return;
+    }
+
+    manageOrdersStatus.textContent = "Loading orders...";
+    loadOrdersButton.disabled = true;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/orders`, {
+            headers: getAuthHeaders(),
+        });
+
+        if (!response.ok) {
+            throw new Error(await getErrorMessage(response));
+        }
+
+        const orders = await response.json();
+
+        const clothesResponse = await fetch(`${API_BASE_URL}/clothes`);
+
+        if (!clothesResponse.ok) {
+            throw new Error("Could not load clothing details.");
+        }
+
+        const clothes = await clothesResponse.json();
+
+        const clothingMap = new Map(
+            clothes.map((item) => [
+                Number(item.clothing_id),
+                item.name,
+            ])
+        );
+
+        ordersList.replaceChildren();
+
+        if (!Array.isArray(orders) || orders.length === 0) {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 5;
+            cell.textContent = "No orders have been placed yet.";
+
+            row.appendChild(cell);
+            ordersList.appendChild(row);
+        } else {
+            orders.forEach((order) => {
+                const row = document.createElement("tr");
+
+                const items = Array.isArray(order.items)
+                    ? order.items
+                    : [];
+
+                const itemDetails = items.length
+                    ? items.map((item) => {
+                        const clothingName =
+                            clothingMap.get(Number(item.clothing_id)) ||
+                            `Unknown item (${item.clothing_id})`;
+
+                        return `${clothingName} × ${item.quantity}`;
+                    }).join(", ")
+                    : "No items";
+
+                const total = items.reduce((sum, item) => {
+                    return sum +
+                        Number(item.unit_price) * Number(item.quantity);
+                }, 0);
+
+                const values = [
+                    order.order_id,
+                    order.customer_id,
+                    order.order_date,
+                    itemDetails,
+                    "KSh " + formatPrice(total),
+                ];
+
+                values.forEach((value) => {
+                    const cell = document.createElement("td");
+                    cell.textContent = String(value ?? "—");
+                    row.appendChild(cell);
+                });
+
+                ordersList.appendChild(row);
+            });
+        }
+
+        manageOrdersStatus.textContent =
+            `${orders.length} order(s) loaded successfully.`;
+
+    } catch (error) {
+        console.error("Could not load orders:", error);
+
+        manageOrdersStatus.textContent =
+            "Could not load orders: " + error.message;
+    } finally {
+        loadOrdersButton.disabled = false;
+    }
+}
+
+if (loadOrdersButton) {
+    loadOrdersButton.addEventListener("click", loadOrders);
+}
+
+// Toggle password visibility
+document.querySelectorAll(".toggle-password").forEach((button) => {
+    button.addEventListener("click", () => {
+        const passwordWrapper = button.closest(".password-input-wrapper");
+        const passwordInput = passwordWrapper.querySelector("input");
+
+        const isPasswordHidden = passwordInput.type === "password";
+
+        passwordInput.type = isPasswordHidden ? "text" : "password";
+
+        button.textContent = isPasswordHidden ? "🙈" : "👁";
+        button.setAttribute(
+            "aria-label",
+            isPasswordHidden ? "Hide password" : "Show password"
+        );
+        button.setAttribute("aria-pressed", String(isPasswordHidden));
+    });
+});
+
+/* ==========================================
    CONNECT THE LOAD REQUESTS BUTTON
    ========================================== */
 

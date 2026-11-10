@@ -48,15 +48,24 @@
       <nav aria-label="Main navigation">
         <a href="#home">Home</a>
         <a href="#collection">Collection</a>
+
         <a href="#add-item" data-admin-only hidden>Add Item</a>
+
         <a href="#special-requests">Request an Item</a>
+
         <a href="#manage-item-requests" data-admin-only hidden>
           Manage Requests
         </a>
+
+        <a href="#manage-customers" data-admin-only hidden>
+          Manage Customers
+        </a>
+
+        <a href="#manage-orders" data-admin-only hidden> Manage Orders </a>
+
         <a href="#about">About Us</a>
         <a href="#contact">Contact</a>
       </nav>
-
       <a class="header-shop-link" href="#collection">
         Explore styles <span>↗</span>
       </a>
@@ -276,12 +285,25 @@
 
             <div class="form-group">
               <label for="login-password">Password</label>
-              <input
-                type="password"
-                id="login-password"
-                autocomplete="current-password"
-                required
-              />
+
+              <div class="password-input-wrapper">
+                <input
+                  type="password"
+                  id="login-password"
+                  autocomplete="current-password"
+                  required
+                />
+
+                <button
+                  type="button"
+                  class="toggle-password"
+                  data-target="login-password"
+                  aria-label="Show password"
+                  aria-pressed="false"
+                >
+                  👁️
+                </button>
+              </div>
             </div>
 
             <button type="submit">Sign In →</button>
@@ -325,13 +347,24 @@
 
             <div class="form-group">
               <label for="register-password">Password</label>
-              <input
-                type="password"
-                id="register-password"
-                autocomplete="new-password"
-                minlength="8"
-                required
-              />
+              <div class="password-input-wrapper">
+                <input
+                  type="password"
+                  id="register-password"
+                  autocomplete="new-password"
+                  minlength="8"
+                  required
+                />
+                <button
+                  type="button"
+                  class="toggle-password"
+                  data-target="register-password"
+                  aria-label="Show password"
+                  aria-pressed="false"
+                >
+                  👁️
+                </button>
+              </div>
             </div>
 
             <button type="submit">Create Account →</button>
@@ -588,6 +621,72 @@
             </thead>
 
             <tbody id="item-requests-list"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ADMIN: MANAGE CUSTOMERS -->
+      <section
+        id="manage-customers"
+        class="content-card"
+        data-admin-only
+        hidden
+        aria-labelledby="manage-customers-title"
+      >
+        <p class="eyebrow">STORE MANAGEMENT</p>
+        <h2 id="manage-customers-title">Manage Customers<span>.</span></h2>
+        <p class="section-description">
+          View customer profiles registered with PURE STYLE.
+        </p>
+
+        <button type="button" id="load-customers">Load Customers</button>
+
+        <p id="manage-customers-status" role="status" aria-live="polite"></p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Customer ID</th>
+                <th>Full Name</th>
+                <th>Phone</th>
+              </tr>
+            </thead>
+            <tbody id="customers-list"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ADMIN: MANAGE ORDERS -->
+      <section
+        id="manage-orders"
+        class="content-card"
+        data-admin-only
+        hidden
+        aria-labelledby="manage-orders-title"
+      >
+        <p class="eyebrow">STORE MANAGEMENT</p>
+        <h2 id="manage-orders-title">Manage Orders<span>.</span></h2>
+        <p class="section-description">
+          View customer orders and their purchased items.
+        </p>
+
+        <button type="button" id="load-orders">Load Orders</button>
+
+        <p id="manage-orders-status" role="status" aria-live="polite"></p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer ID</th>
+                <th>Order Date</th>
+                <th>Items</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="orders-list"></tbody>
           </table>
         </div>
       </section>
