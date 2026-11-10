@@ -1,3 +1,7 @@
+import os
+
+os.environ["TESTING"] = "1"
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -6,7 +10,7 @@ from sqlalchemy.pool import StaticPool
 
 from main import app
 from database import get_db
-from models import Base
+from models import Base, Users
 
 
 # Use a separate in-memory database for tests.
@@ -43,7 +47,7 @@ def client():
     Base.metadata.drop_all(bind=test_engine)
 
 
-def get_auth_headers(client):
+def get_admin_auth_headers(client):
     # Register a test user.
     register_response = client.post(
         "/register",
@@ -52,7 +56,22 @@ def get_auth_headers(client):
             "password": "TestPassword123!",
         },
     )
+
     assert register_response.status_code == 201
+
+    # Promote the test user to administrator.
+    db = TestingSessionLocal()
+
+    try:
+        test_user = db.query(Users).filter(
+            Users.email == "test@example.com"
+        ).first()
+
+        test_user.role = "admin"
+        db.commit()
+
+    finally:
+        db.close()
 
     # Log in to receive an access token.
     login_response = client.post(
@@ -62,6 +81,7 @@ def get_auth_headers(client):
             "password": "TestPassword123!",
         },
     )
+
     assert login_response.status_code == 200
 
     token = login_response.json()["access_token"]
@@ -77,7 +97,7 @@ def test_health_returns_200(client):
 
 
 def test_post_clothes_creates_item(client):
-    headers = get_auth_headers(client)
+    headers = get_admin_auth_headers(client)
 
     response = client.post(
         "/clothes",
@@ -92,7 +112,7 @@ def test_post_clothes_creates_item(client):
         },
     )
 
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()["name"] == "Test Shirt"
     assert response.json()["quantity"] == 5
     assert "clothing_id" in response.json()
@@ -105,7 +125,7 @@ def test_get_clothes_bad_id_returns_404(client):
 
 
 def test_negative_quantity_returns_422(client):
-    headers = get_auth_headers(client)
+    headers = get_admin_auth_headers(client)
 
     response = client.post(
         "/clothes",
@@ -137,3 +157,43 @@ def test_unauthenticated_post_returns_401(client):
     )
 
     assert response.status_code == 401
+
+
+def test_customer_cannot_add_clothes(client):
+    register_response = client.post(
+        "/register",
+        json={
+            "email": "customer@example.com",
+            "password": "CustomerPass123!",
+        },
+    )
+
+    assert register_response.status_code == 201
+
+    login_response = client.post(
+        "/login",
+        data={
+            "username": "customer@example.com",
+            "password": "CustomerPass123!",
+        },
+    )
+
+    assert login_response.status_code == 200
+
+    token = login_response.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    response = client.post(
+        "/clothes",
+        headers=headers,
+        json={
+            "name": "Customer Shirt",
+            "brand": "Test Brand",
+            "color": "Black",
+            "size": "M",
+            "quantity": 5,
+            "price": "19.99",
+        },
+    )
+
+    assert response.status_code == 403

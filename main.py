@@ -1,4 +1,4 @@
-
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import engine
@@ -6,14 +6,14 @@ from models import Base
 from routers import auth, clothes, customers, orders, item_requests
 
 
-# Create any missing database tables
-Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Clothing Store API",
     description="API for managing clothes, customers, and orders.",
-    version="1.0.0"
-
+    version="1.0.0",
 )
+# Create missing database tables outside the test environment
+if os.getenv("TESTING") != "1":
+    Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,6 +26,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 @app.get("/health")
 def health():
     return {"status": "ok"}

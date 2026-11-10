@@ -2710,6 +2710,10 @@ textarea {
         transition: none;
     }
 }
+/* Control visibility of account and admin sections */
+[hidden] {
+    display: none !important;
+}
 
 
 

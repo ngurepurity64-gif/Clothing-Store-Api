@@ -90,6 +90,11 @@ def get_current_user(
 
     return user
 
+@router.get("/me", response_model=UserResponse)
+def read_current_user(
+    current_user: Users = Depends(get_current_user)
+):
+    return current_user
 
 @router.post("/login")
 def login_user(
@@ -146,7 +151,8 @@ def register_user(
 
     new_user = Users(
         email=str(user_data.email),
-        hashed_password=hashed_password
+        hashed_password=hashed_password,
+        role="customer"
     )
 
     db.add(new_user)
@@ -154,3 +160,11 @@ def register_user(
     db.refresh(new_user)
 
     return new_user
+
+def require_admin(current_user: Users = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Administrator access required"
+        )
+    return current_user

@@ -22,8 +22,7 @@ class Clothes(Base):
     # Relationship with order items
     order_items = relationship("OrderItems", back_populates="clothing")
 
-
-# Customers table
+#customer table
 class Customers(Base):
     __tablename__ = "customers"
 
@@ -31,9 +30,17 @@ class Customers(Base):
     name = Column(String)
     phone = Column(String)
 
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        unique=True,
+        nullable=True
+    )
+
+    user = relationship("Users", back_populates="customer")
+
     # One customer can have many orders
     orders = relationship("Orders", back_populates="customer")
-
 
 # Orders table
 class Orders(Base):
@@ -74,6 +81,18 @@ class Users(Base):
     id = Column(Integer, primary_key=True)
     email = Column(String(255), unique=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
+
+    role = Column(
+        String(20),
+        nullable=False,
+        default="customer"
+    )
+
+    customer = relationship(
+        "Customers",
+        back_populates="user",
+        uselist=False
+    )
 
 
 # Special requests for clothing items not in the inventory

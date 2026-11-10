@@ -1,14 +1,13 @@
-
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 
 from database import get_db
 from models import ItemRequests, Users
 from schemas import ItemRequestCreate, ItemRequestResponse
-from routers.auth import get_current_user
+from routers.auth import require_admin
 
 
 router = APIRouter(
@@ -29,11 +28,11 @@ class ItemRequestStatusUpdate(BaseModel):
         return value
 
 
-# Submit a request for clothing not in the inventory
+# Submit a clothing request - Public access
 @router.post(
     "",
     response_model=ItemRequestResponse,
-    status_code=201
+    status_code=status.HTTP_201_CREATED
 )
 def create_item_request(
     request_data: ItemRequestCreate,
@@ -58,14 +57,14 @@ def create_item_request(
     return new_request
 
 
-# View all special requests (requires login)
+# View all special requests - Admin only
 @router.get(
     "",
     response_model=list[ItemRequestResponse]
 )
 def get_item_requests(
     db: Session = Depends(get_db),
-    current_user: Users = Depends(get_current_user)
+    current_user: Users = Depends(require_admin)
 ):
     return (
         db.query(ItemRequests)
@@ -74,7 +73,7 @@ def get_item_requests(
     )
 
 
-# View one special request (requires login)
+# View one special request - Admin only
 @router.get(
     "/{request_id}",
     response_model=ItemRequestResponse
@@ -82,7 +81,7 @@ def get_item_requests(
 def get_item_request(
     request_id: int,
     db: Session = Depends(get_db),
-    current_user: Users = Depends(get_current_user)
+    current_user: Users = Depends(require_admin)
 ):
     item_request = db.query(ItemRequests).filter(
         ItemRequests.request_id == request_id
@@ -90,14 +89,14 @@ def get_item_request(
 
     if item_request is None:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Item request not found"
         )
 
     return item_request
 
 
-# Accept or reject a request (requires login)
+# Accept or reject a request - Admin only
 @router.patch(
     "/{request_id}",
     response_model=ItemRequestResponse
@@ -106,7 +105,7 @@ def update_item_request_status(
     request_id: int,
     status_data: ItemRequestStatusUpdate,
     db: Session = Depends(get_db),
-    current_user: Users = Depends(get_current_user)
+    current_user: Users = Depends(require_admin)
 ):
     item_request = db.query(ItemRequests).filter(
         ItemRequests.request_id == request_id
@@ -114,7 +113,7 @@ def update_item_request_status(
 
     if item_request is None:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Item request not found"
         )
 

@@ -12,8 +12,29 @@ const formStatus = document.querySelector("#form-status");
 const submitButton = clothingForm
     ? clothingForm.querySelector('button[type="submit"]')
     : null;
+/* ==========================================
+   ACCOUNT AND AUTHENTICATION ELEMENTS
+   ========================================== */
 
+const loginForm = document.querySelector("#login-form");
+const registerForm = document.querySelector("#register-form");
+const accountStatus = document.querySelector("#account-status");
+const loggedInAccount = document.querySelector("#logged-in-account");
+const accountWelcome = document.querySelector("#account-welcome");
+const logoutButton = document.querySelector("#logout-button");
 
+const adminOnlySections = document.querySelectorAll("[data-admin-only]");
+
+// Store the login session for the current browser tab.
+const getAuthToken = () => sessionStorage.getItem("access_token");
+
+const getAuthHeaders = () => {
+    const token = getAuthToken();
+
+    return token
+        ? { Authorization: `Bearer ${token}` }
+        : {};
+};
 /* ==========================================
    HELPER FUNCTIONS
    ========================================== */
@@ -64,7 +85,195 @@ async function getErrorMessage(response) {
 
     return "Request failed with status " + response.status + ".";
 }
+/* ==========================================
+   ACCOUNT LOGIN AND REGISTRATION
+   ========================================== */
 
+function updateAccountDisplay(user) {
+    const accountForms = document.querySelector("#account-forms");
+    const isLoggedIn = Boolean(user);
+    const isAdmin = isLoggedIn && user.role === "admin";
+
+    if (accountForms) {
+        accountForms.hidden = isLoggedIn;
+    }
+
+    if (loggedInAccount) {
+        loggedInAccount.hidden = !isLoggedIn;
+    }
+
+    if (accountWelcome && isLoggedIn) {
+        accountWelcome.textContent = `Welcome, ${user.email}! Your role: ${user.role}.`;
+    }
+
+    adminOnlySections.forEach((section) => {
+        section.hidden = !isAdmin;
+    });
+
+    if (accountStatus && isLoggedIn) {
+        accountStatus.textContent = "You are successfully logged in.";
+    }
+}
+
+// Log in an existing customer or administrator
+async function loginAccount(email, password) {
+    const response = await fetch(`${API_BASE_URL}/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+            username: email,
+            password: password,
+        }),
+    });
+
+    if (!response.ok) {
+        throw new Error(await getErrorMessage(response));
+    }
+
+    const tokenData = await response.json();
+
+    sessionStorage.setItem("access_token", tokenData.access_token);
+
+    const userResponse = await fetch(`${API_BASE_URL}/me`, {
+        headers: getAuthHeaders(),
+    });
+
+    if (!userResponse.ok) {
+        sessionStorage.removeItem("access_token");
+        throw new Error(await getErrorMessage(userResponse));
+    }
+
+    const user = await userResponse.json();
+
+    updateAccountDisplay(user);
+}
+
+// Connect the login form
+if (loginForm) {
+    loginForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        accountStatus.textContent = "Signing you in...";
+
+        const email = document.querySelector("#login-email").value.trim();
+        const password = document.querySelector("#login-password").value;
+
+        try {
+            await loginAccount(email, password);
+
+            loginForm.reset();
+        } catch (error) {
+            console.error("Login failed:", error);
+            accountStatus.textContent = "Login failed: " + error.message;
+        }
+    });
+}
+
+// Connect the registration form
+if (registerForm) {
+    registerForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        accountStatus.textContent = "Creating your account...";
+
+        const name = document.querySelector("#register-name").value.trim();
+        const phone = document.querySelector("#register-phone").value.trim();
+        const email = document.querySelector("#register-email").value.trim();
+        const password = document.querySelector("#register-password").value;
+
+        try {
+            // Create the customer account
+            const registerResponse = await fetch(`${API_BASE_URL}/register`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                }),
+            });
+
+            if (!registerResponse.ok) {
+                throw new Error(await getErrorMessage(registerResponse));
+            }
+
+            // Log in the newly registered customer
+            await loginAccount(email, password);
+
+            // Create the customer's profile
+            const profileResponse = await fetch(`${API_BASE_URL}/customers`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeaders(),
+                },
+                body: JSON.stringify({
+                    name: name,
+                    phone: phone,
+                }),
+            });
+
+            if (!profileResponse.ok) {
+                throw new Error(await getErrorMessage(profileResponse));
+            }
+
+            registerForm.reset();
+
+            accountStatus.textContent =
+                "Your account and customer profile were created successfully!";
+        } catch (error) {
+            console.error("Registration failed:", error);
+            accountStatus.textContent = "Registration failed: " + error.message;
+        }
+    });
+}
+
+// Log out the current user
+if (logoutButton) {
+    logoutButton.addEventListener("click", function () {
+        sessionStorage.removeItem("access_token");
+
+        updateAccountDisplay(null);
+
+        if (accountStatus) {
+            accountStatus.textContent = "You have logged out successfully.";
+        }
+    });
+}
+
+// Restore the current login session when the page opens
+async function initializeAccount() {
+    const token = getAuthToken();
+
+    if (!token) {
+        updateAccountDisplay(null);
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/me`, {
+            headers: getAuthHeaders(),
+        });
+
+        if (!response.ok) {
+            throw new Error("Your session has expired. Please log in again.");
+        }
+
+        const user = await response.json();
+
+        updateAccountDisplay(user);
+    } catch (error) {
+        sessionStorage.removeItem("access_token");
+        updateAccountDisplay(null);
+
+        if (accountStatus) {
+            accountStatus.textContent = error.message;
+        }
+    }
+}
 /* ==========================================
    DISPLAY CLOTHING AS PRODUCT CARDS
    ========================================== */
@@ -103,9 +312,7 @@ function displayClothes(clothes) {
         const image = document.createElement("img");
         image.className = "product-image";
 
-        image.src = item.image_url
-            ? "./" + item.image_url.replace(/^\/+/, "")
-            : "";
+        image.src = item.image_url ? "./" + item.image_url.replace(/^\/+/, "") : "";
 
         image.alt = name || "Clothing product";
         image.loading = "lazy";
@@ -239,8 +446,23 @@ async function loadClothes() {
    PLACE A CLOTHING ORDER
    ========================================== */
 
+/* ==========================================
+   PLACE A CLOTHING ORDER
+   ========================================== */
 async function startOrder(clothingId) {
-    // Ask how many items the customer wants
+    const token = getAuthToken();
+
+    // Require the customer to log in first
+    if (!token) {
+        alert("Please sign in or create an account before placing an order.");
+
+        document.querySelector("#account")?.scrollIntoView({
+            behavior: "smooth",
+        });
+
+        return;
+    }
+
     const quantityInput = window.prompt(
         "How many items would you like to order?",
     );
@@ -254,149 +476,106 @@ async function startOrder(clothingId) {
         return;
     }
 
-    // Collect the customer's details
-    const name = window.prompt("Enter your full name:");
-    if (!name || !name.trim()) return;
-
-    const phone = window.prompt("Enter your phone number:");
-    if (!phone || !phone.trim()) return;
-
-    const email = window.prompt("Enter your account email:");
-    if (!email || !email.trim()) return;
-
-    const password = window.prompt("Enter your account password:");
-    if (!password) return;
-
     try {
-        // First, try logging in to the existing account
-        let response = await fetch(API_BASE_URL + "/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({
-                username: email.trim(),
-                password: password,
-            }),
+        // Verify the logged-in user
+        const userResponse = await fetch(`${API_BASE_URL}/me`, {
+            headers: getAuthHeaders(),
         });
 
-        // If login fails, offer to register a new account
-        if (!response.ok) {
-            const createAccount = window.confirm(
-                "Login failed. Would you like to register a new account? " +
-                "Use this only if you have not registered before.",
-            );
+        if (!userResponse.ok) {
+            throw new Error("Your session has expired. Please log in again.");
+        }
 
-            if (!createAccount) {
-                throw new Error("Login failed. Check your email and password.");
-            }
+        const user = await userResponse.json();
 
-            response = await fetch(API_BASE_URL + "/register", {
+        if (user.role !== "customer") {
+            throw new Error("Only customer accounts can place clothing orders.");
+        }
+
+        // Check whether the customer has a profile
+        const profileResponse = await fetch(`${API_BASE_URL}/customers/me`, {
+            headers: getAuthHeaders(),
+        });
+
+        // Create a profile if one does not exist
+        if (profileResponse.status === 404) {
+            const name = window.prompt("Enter your full name:");
+            if (!name || !name.trim()) return;
+
+            const phone = window.prompt("Enter your phone number:");
+            if (!phone || !phone.trim()) return;
+
+            const createProfileResponse = await fetch(`${API_BASE_URL}/customers`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    ...getAuthHeaders(),
                 },
                 body: JSON.stringify({
-                    email: email.trim(),
-                    password: password,
+                    name: name.trim(),
+                    phone: phone.trim(),
                 }),
             });
 
-            if (!response.ok) {
-                throw new Error(await getErrorMessage(response));
+            if (!createProfileResponse.ok) {
+                throw new Error(await getErrorMessage(createProfileResponse));
             }
-
-            // Log in after successful registration
-            response = await fetch(API_BASE_URL + "/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: new URLSearchParams({
-                    username: email.trim(),
-                    password: password,
-                }),
-            });
+        } else if (!profileResponse.ok) {
+            throw new Error(await getErrorMessage(profileResponse));
         }
 
-        if (!response.ok) {
-            throw new Error(await getErrorMessage(response));
-        }
-
-        const loginData = await response.json();
-        const token = loginData.access_token;
-
-        if (!token) {
-            throw new Error("The API did not return an access token.");
-        }
-
-        const authHeaders = {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-        };
-
-        // Create the customer record
-        response = await fetch(API_BASE_URL + "/customers", {
-            method: "POST",
-            headers: authHeaders,
-            body: JSON.stringify({
-                name: name.trim(),
-                phone: phone.trim(),
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error(await getErrorMessage(response));
-        }
-
-        const customer = await response.json();
-
-        // Create an order for this customer
-        response = await fetch(API_BASE_URL + `/orders/${order.order_id}/items`, {
-            method: "POST",
-            headers: authHeaders,
-            body: JSON.stringify({
-                customer_id: customer.customer_id,
-                order_date: new Date().toISOString().slice(0, 10),
-            }),
-        });
-
-        if (!response.ok) {
-            throw new Error(await getErrorMessage(response));
-        }
-
-        const order = await response.json();
-
-        // Add the selected clothing to the order
-        response = await fetch(
-            `${API_BASE_URL}/orders/${order.order_id}/items`,
-            {
-                method: "POST",
-                headers: authHeaders,
-                body: JSON.stringify({
-                    clothing_id: clothingId,
-                    quantity: quantity,
-                }),
-            },
-        );
-
-        if (!response.ok) {
-            throw new Error(await getErrorMessage(response));
-        }
-
-        // Refresh inventory to show the updated stock
-        await loadClothes();
-
-        alert(
-            "Order placed successfully!\n" +
-            "Your order number is: " +
-            order.order_id,
-        );
+        // Complete the order using the existing function
+        await completeOrder(clothingId, quantity, token);
     } catch (error) {
-        console.error("Order failed:", error);
+        console.error("Order error:", error);
 
-        alert("Could not complete your order: " + error.message);
+        alert(error.message || "Something went wrong while placing your order.");
     }
+}
+
+// Create the order and add the selected clothing item
+async function completeOrder(clothingId, quantity, token) {
+    const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+    };
+
+    // First create the order
+    const orderResponse = await fetch(`${API_BASE_URL}/orders`, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+            order_date: new Date().toISOString().slice(0, 10),
+        }),
+    });
+
+    if (!orderResponse.ok) {
+        throw new Error(await getErrorMessage(orderResponse));
+    }
+
+    const order = await orderResponse.json();
+
+    // Then add the selected clothing item
+    const itemResponse = await fetch(
+        `${API_BASE_URL}/orders/${order.order_id}/items`,
+        {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({
+                clothing_id: clothingId,
+                quantity: quantity,
+            }),
+        },
+    );
+
+    if (!itemResponse.ok) {
+        throw new Error(await getErrorMessage(itemResponse));
+    }
+
+    alert("Your order has been placed successfully!");
+
+    // Refresh the clothing collection
+    await loadClothes();
 }
 
 /* ==========================================
@@ -411,15 +590,11 @@ if (clothingForm) {
             formStatus.textContent = "";
         }
 
-        const token = window.prompt(
-            "Enter your API access token to add a clothing item:",
-        );
+        const token = getAuthToken();
 
-        if (token === null || token.trim() === "") {
-            if (formStatus) {
-                formStatus.textContent =
-                    "No access token entered. The item has not been saved.";
-            }
+        if (!token) {
+            formStatus.textContent =
+                "Please log in as an administrator before adding clothing.";
             return;
         }
 
@@ -615,15 +790,11 @@ if (specialRequestForm) {
 async function loadItemRequests() {
     if (!requestsList) return;
 
-    const token = window.prompt(
-        "Enter your API access token to view special requests:",
-    );
+    const token = getAuthToken();
 
-    if (token === null || !token.trim()) {
-        if (manageRequestsStatus) {
-            manageRequestsStatus.textContent =
-                "Access token not entered. Requests were not loaded.";
-        }
+    if (!token) {
+        manageRequestsStatus.textContent =
+            "Please log in as an administrator to view special requests.";
         return;
     }
 
@@ -634,7 +805,7 @@ async function loadItemRequests() {
     try {
         const response = await fetch(REQUESTS_URL, {
             headers: {
-                Authorization: "Bearer " + token.trim(),
+                Authorization: "Bearer " + token,
             },
         });
 
@@ -644,7 +815,7 @@ async function loadItemRequests() {
 
         const requests = await response.json();
 
-        displayItemRequests(requests, token.trim());
+        displayItemRequests(requests, token);
 
         if (manageRequestsStatus) {
             manageRequestsStatus.textContent =
@@ -785,4 +956,5 @@ if (loadRequestsButton) {
    LOAD THE CLOTHING WHEN THE PAGE OPENS
    ========================================== */
 
+initializeAccount();
 loadClothes();

@@ -1,23 +1,23 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from database import get_db
 from models import Clothes, Users
 from schemas import ClothesCreate, ClothesResponse
-from routers.auth import get_current_user
+from routers.auth import require_admin
 
 
 router = APIRouter()
 
 
-# GET all clothes
+# GET all clothes - Public access
 @router.get("/clothes", response_model=list[ClothesResponse])
 def get_clothes(db: Session = Depends(get_db)):
     clothes = db.query(Clothes).all()
     return clothes
 
 
-# GET one clothing item
+# GET one clothing item - Public access
 @router.get(
     "/clothes/{clothing_id}",
     response_model=ClothesResponse
@@ -32,22 +32,23 @@ def get_clothing(
 
     if clothing is None:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Clothing item not found"
         )
 
     return clothing
 
 
-# POST - Add new clothes
+# POST - Add new clothes - Admin only
 @router.post(
     "/clothes",
-    response_model=ClothesResponse
+    response_model=ClothesResponse,
+    status_code=status.HTTP_201_CREATED
 )
 def create_clothes(
     clothes_data: ClothesCreate,
     db: Session = Depends(get_db),
-    current_user: Users = Depends(get_current_user)
+    current_user: Users = Depends(require_admin)
 ):
     new_clothes = Clothes(
         name=clothes_data.name,
@@ -66,7 +67,7 @@ def create_clothes(
     return new_clothes
 
 
-# PUT - Update clothing
+# PUT - Update clothing - Admin only
 @router.put(
     "/clothes/{clothing_id}",
     response_model=ClothesResponse
@@ -75,7 +76,7 @@ def update_clothing(
     clothing_id: int,
     clothes_data: ClothesCreate,
     db: Session = Depends(get_db),
-    current_user: Users = Depends(get_current_user)
+    current_user: Users = Depends(require_admin)
 ):
     clothing = db.query(Clothes).filter(
         Clothes.clothing_id == clothing_id
@@ -83,7 +84,7 @@ def update_clothing(
 
     if clothing is None:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Clothing item not found"
         )
 
@@ -101,12 +102,12 @@ def update_clothing(
     return clothing
 
 
-# DELETE - Delete clothing
+# DELETE - Delete clothing - Admin only
 @router.delete("/clothes/{clothing_id}")
 def delete_clothing(
     clothing_id: int,
     db: Session = Depends(get_db),
-    current_user: Users = Depends(get_current_user)
+    current_user: Users = Depends(require_admin)
 ):
     clothing = db.query(Clothes).filter(
         Clothes.clothing_id == clothing_id
@@ -114,7 +115,7 @@ def delete_clothing(
 
     if clothing is None:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Clothing item not found"
         )
 
@@ -124,3 +125,4 @@ def delete_clothing(
     return {
         "message": "Clothing item deleted successfully"
     }
+    
